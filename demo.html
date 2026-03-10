@@ -1,0 +1,2220 @@
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Speech Enhancement Demo</title>
+
+<style>
+body {font-family: Arial; margin:40px;}
+table {border-collapse: collapse;}
+td,th {border:1px solid #ccc; padding:10px;}
+audio {width:230px;}
+</style>
+
+</head>
+<body>
+
+<h1>Speech Enhancement Demo</h1>
+
+<table>
+<tr>
+<th>Room</th>
+<th>Reference</th>
+<th>Room recording</th>
+<th>MossFormer</th>
+<th>Final</th>
+</tr>
+
+<tr>
+
+<td>B104_20260224_074007</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B104_20260224_074007.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B104_20260224_074007_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B104_20260224_074007_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B202_20260220_085452</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B202_20260220_085452.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B202_20260220_085452_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B202_20260220_085452_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B202_20260220_085518</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B202_20260220_085518.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B202_20260220_085518_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B202_20260220_085518_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B203_20260217_150118</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B203_20260217_150118.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B203_20260217_150118_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B203_20260217_150118_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B203_20260220_090722</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B203_20260220_090722.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B203_20260220_090722_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B203_20260220_090722_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B204_20260220_085617</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B204_20260220_085617.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B204_20260220_085617_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B204_20260220_085617_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B205_20260217_145134</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B205_20260217_145134.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B205_20260217_145134_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B205_20260217_145134_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B206_20260220_085718</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B206_20260220_085718.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B206_20260220_085718_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B206_20260220_085718_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B208_20260217_124230</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B208_20260217_124230.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B208_20260217_124230_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B208_20260217_124230_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B208_20260220_090234</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B208_20260220_090234.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B208_20260220_090234_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B208_20260220_090234_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B210_20260217_123454</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B210_20260217_123454.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B210_20260217_123454_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B210_20260217_123454_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B212_20260217_122731</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B212_20260217_122731.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B212_20260217_122731_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B212_20260217_122731_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B214_20260217_121910</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B214_20260217_121910.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B214_20260217_121910_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B214_20260217_121910_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B216_20260217_121022</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B216_20260217_121022.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B216_20260217_121022_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B216_20260217_121022_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B218_20260217_120204</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B218_20260217_120204.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B218_20260217_120204_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B218_20260217_120204_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B302_20260220_083337</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B302_20260220_083337.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B302_20260220_083337_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B302_20260220_083337_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B304_20260220_083502</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B304_20260220_083502.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B304_20260220_083502_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B304_20260220_083502_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B306_20260217_151733</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B306_20260217_151733.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B306_20260217_151733_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B306_20260217_151733_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B306_20260220_083616</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B306_20260220_083616.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B306_20260220_083616_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B306_20260220_083616_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B415_20260219_093546</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B415_20260219_093546.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B415_20260219_093546_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B415_20260219_093546_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B417_20260219_093144</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B417_20260219_093144.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B417_20260219_093144_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B417_20260219_093144_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B422_20260217_153247</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B422_20260217_153247.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B422_20260217_153247_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B422_20260217_153247_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B422_20260217_153320</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B422_20260217_153320.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B422_20260217_153320_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B422_20260217_153320_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B502_20260219_072334</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B502_20260219_072334.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B502_20260219_072334_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B502_20260219_072334_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B504_20260219_072532</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B504_20260219_072532.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B504_20260219_072532_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B504_20260219_072532_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B505_20260219_073612</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B505_20260219_073612.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B505_20260219_073612_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B505_20260219_073612_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B506_20260217_154411</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B506_20260217_154411.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B506_20260217_154411_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B506_20260217_154411_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B506_20260219_072942</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B506_20260219_072942.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B506_20260219_072942_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B506_20260219_072942_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B506_20260219_073043</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B506_20260219_073043.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B506_20260219_073043_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B506_20260219_073043_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B507_20260219_074646</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B507_20260219_074646.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B507_20260219_074646_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B507_20260219_074646_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B508_20260219_074036</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B508_20260219_074036.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B508_20260219_074036_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B508_20260219_074036_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B509_20260219_075102</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B509_20260219_075102.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B509_20260219_075102_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B509_20260219_075102_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B512_20260217_104657</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B512_20260217_104657.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B512_20260217_104657_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B512_20260217_104657_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B512_20260217_105703</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B512_20260217_105703.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B512_20260217_105703_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B512_20260217_105703_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B512_20260217_105753</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B512_20260217_105753.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B512_20260217_105753_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B512_20260217_105753_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B512_20260219_075800</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B512_20260219_075800.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B512_20260219_075800_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B512_20260219_075800_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B515_20260219_081926</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B515_20260219_081926.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B515_20260219_081926_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B515_20260219_081926_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B515_20260219_082001</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B515_20260219_082001.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B515_20260219_082001_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B515_20260219_082001_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B517_20260219_081404</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B517_20260219_081404.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B517_20260219_081404_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B517_20260219_081404_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B528_20260219_082614</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B528_20260219_082614.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B528_20260219_082614_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B528_20260219_082614_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B528_20260219_082641</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B528_20260219_082641.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B528_20260219_082641_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B528_20260219_082641_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B528_20260219_082807</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B528_20260219_082807.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B528_20260219_082807_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B528_20260219_082807_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B704_20260218_143540</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B704_20260218_143540.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B704_20260218_143540_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B704_20260218_143540_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B704_20260218_143629</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B704_20260218_143629.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B704_20260218_143629_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B704_20260218_143629_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B704_20260218_144817</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B704_20260218_144817.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B704_20260218_144817_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B704_20260218_144817_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B705_20260219_070905</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B705_20260219_070905.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B705_20260219_070905_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B705_20260219_070905_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B706_20260218_144215</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B706_20260218_144215.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B706_20260218_144215_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B706_20260218_144215_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B708_20260218_093051</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B708_20260218_093051.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B708_20260218_093051_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B708_20260218_093051_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B710_20260218_094131</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B710_20260218_094131.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B710_20260218_094131_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B710_20260218_094131_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B712_20260218_122123</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B712_20260218_122123.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B712_20260218_122123_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B712_20260218_122123_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B714_20260218_095520</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B714_20260218_095520.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B714_20260218_095520_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B714_20260218_095520_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B720_20260218_100338</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B720_20260218_100338.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B720_20260218_100338_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B720_20260218_100338_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B802_20260219_070343</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B802_20260219_070343.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B802_20260219_070343_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B802_20260219_070343_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B804_20260218_091113</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B804_20260218_091113.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B804_20260218_091113_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B804_20260218_091113_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B806_20260218_090444</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B806_20260218_090444.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B806_20260218_090444_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B806_20260218_090444_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B808_20260218_085934</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B808_20260218_085934.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B808_20260218_085934_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B808_20260218_085934_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B810_20260218_085321</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B810_20260218_085321.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B810_20260218_085321_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B810_20260218_085321_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B812_20260218_084623</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B812_20260218_084623.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B812_20260218_084623_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B812_20260218_084623_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B814_20260218_083905</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B814_20260218_083905.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B814_20260218_083905_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B814_20260218_083905_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B816_20260218_082915</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B816_20260218_082915.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B816_20260218_082915_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B816_20260218_082915_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B917_20260219_065312</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B917_20260219_065312.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B917_20260219_065312_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B917_20260219_065312_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B919_20260219_065802</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B919_20260219_065802.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B919_20260219_065802_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B919_20260219_065802_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>B928_20260218_140820</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/B928_20260218_140820.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B928_20260218_140820_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="B928_20260218_140820_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>F201-203_20260217_143931</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/F201-203_20260217_143931.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="F201-203_20260217_143931_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="F201-203_20260217_143931_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>F206_20260224_073241</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/F206_20260224_073241.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="F206_20260224_073241_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="F206_20260224_073241_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>F308_20260220_084811</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/F308_20260220_084811.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="F308_20260220_084811_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="F308_20260220_084811_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>f304_20260220_084126</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/f304_20260220_084126.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="f304_20260220_084126_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="f304_20260220_084126_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>Агат_20260220_082447</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/Агат_20260220_082447.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="Агат_20260220_082447_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="Агат_20260220_082447_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>Байкал_20260220_081157</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/Байкал_20260220_081157.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="Байкал_20260220_081157_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="Байкал_20260220_081157_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>В712_20260218_095011</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/В712_20260218_095011.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="В712_20260218_095011_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="В712_20260218_095011_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>Вега_20260220_081611</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/Вега_20260220_081611.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="Вега_20260220_081611_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="Вега_20260220_081611_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>Сетунь_20260220_082006</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/Сетунь_20260220_082006.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="Сетунь_20260220_082006_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="Сетунь_20260220_082006_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+<tr>
+
+<td>Эльбрус_20260220_080650</td>
+
+<td>
+<audio controls>
+<source src="../origin/TEST_SPEACH.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="../recordings/Эльбрус_20260220_080650.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="Эльбрус_20260220_080650_moss.wav" type="audio/wav">
+</audio>
+</td>
+
+<td>
+<audio controls>
+<source src="Эльбрус_20260220_080650_final.wav" type="audio/wav">
+</audio>
+</td>
+
+</tr>
+
+</table>
+</body>
+</html>
