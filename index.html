@@ -1,397 +1,501 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Улучшение речи с помощью MossFormerGAN — Отчет</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: #f4f7fb;
+            color: #1e2b3a;
+            line-height: 1.6;
+        }
 
-<meta charset="UTF-8">
-<title>Speech Enhancement Demo</title>
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 20px 30px;
+            background: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+        }
 
-<style>
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.1em;
+            color: #0a2c3d;
+            border-left: 6px solid #2a7de1;
+            padding-left: 20px;
+        }
 
-body{
-font-family: Arial, sans-serif;
-margin:40px;
-background:#fafafa;
-color:#222;
-}
+        .subtitle {
+            color: #4a5c6a;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+            padding-left: 26px;
+        }
 
-h1{
-font-size:36px;
-margin-bottom:5px;
-}
+        h2 {
+            margin-top: 40px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 8px;
+            color: #1e3a5f;
+            font-weight: 500;
+        }
 
-.subtitle{
-color:#555;
-margin-bottom:20px;
-}
+        .paper-links a {
+            margin-right: 25px;
+            text-decoration: none;
+            color: #2a7de1;
+            font-weight: 600;
+            border-bottom: 1px dashed #2a7de1;
+        }
 
-h2{
-margin-top:40px;
-border-bottom:2px solid #ddd;
-padding-bottom:5px;
-}
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            font-size: 0.9em;
+        }
 
-.container{
-max-width:1200px;
-margin:auto;
-}
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 12px 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
 
-.paper-links a{
-margin-right:20px;
-text-decoration:none;
-font-weight:bold;
-}
+        th {
+            background-color: #eef2f6;
+            font-weight: 600;
+            color: #1e3a5f;
+        }
 
-table{
-border-collapse:collapse;
-width:100%;
-margin-top:20px;
-background:white;
-}
+        tr:nth-child(even) {
+            background-color: #fafcfd;
+        }
 
-th, td{
-border:1px solid #ddd;
-padding:10px;
-text-align:center;
-}
+        audio {
+            width: 220px;
+            height: 36px;
+            vertical-align: middle;
+        }
 
-th{
-background:#f0f0f0;
-}
+        .description {
+            background-color: #f0f5fe;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid #2a7de1;
+        }
 
-audio{
-width:250px;
-}
+        .metrics-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: space-between;
+            margin: 30px 0;
+        }
 
-.description{
-line-height:1.6;
-margin-top:10px;
-}
+        .metric-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px 15px;
+            flex: 1 1 160px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s;
+        }
 
-canvas{
-margin-top:20px;
-}
+        .metric-card:hover {
+            border-color: #2a7de1;
+            box-shadow: 0 8px 18px rgba(42, 125, 225, 0.08);
+        }
 
-.footer{
-margin-top:50px;
-font-size:14px;
-color:#777;
-}
+        .metric-value {
+            font-size: 2.4em;
+            font-weight: 700;
+            color: #0a2c3d;
+        }
 
-</style>
+        .metric-label {
+            color: #4b6a88;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+        }
 
+        .improvement {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #0f7b3a;
+            background: #e0f2e5;
+            padding: 3px 10px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding: 20px 0;
+            text-align: center;
+            border-top: 1px solid #dde3e9;
+            color: #5e6f7e;
+            font-size: 0.9em;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin: 30px 0;
+            border: 1px solid #eef2f6;
+        }
+
+        canvas {
+            max-height: 300px;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        .room-badge {
+            background: #e9ecf0;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #2d4b6e;
+        }
+
+        .note {
+            background-color: #fff9e6;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border-left: 4px solid #f5b342;
+            margin: 25px 0;
+            font-size: 0.95em;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>Speech Enhancement Demo</h1>
+    <h1>✨ Улучшение речи в реальных акустических условиях</h1>
+    <div class="subtitle">
+        Демонстрация работы MossFormerGAN + автоматический мастеринг. Оценка NISQA.
+    </div>
 
-<div class="subtitle">
-Evaluation of MossFormerGAN Speech Enhancement in Real Acoustic Environments
+    <div class="paper-links">
+        <a href="#">📁 GitHub Репозиторий</a>
+        <a href="#">📊 Исходные данные (CSV)</a>
+    </div>
+
+    <h2>📘 О проекте</h2>
+    <div class="description">
+        <p>В этом эксперименте оценивается способность нейросетевого подавления шумов <strong>MossFormerGAN</strong> (с последующим автоматическим мастерингом) восстанавливать качество речи, записанной в сложных акустических условиях.</p>
+        <p><strong>Методика:</strong> эталонная чистая речь воспроизводилась через громкоговоритель и записывалась в 75 различных помещениях (офисы, переговорные, холлы). Каждая запись была обработана единым пайплайном: улучшение речи MossFormerGAN → автоматическая оптимизация громкости и тонального баланса (мастеринг) → оценка объективными метриками NISQA.</p>
+        <p>В таблице ниже представлены все 75 образцов: оригинальная запись ("Recorded Speech") и результат после полной обработки ("Final Enhancement"). Для сравнения также доступна оригинальная чистая речь.</p>
+    </div>
+
+    <h2>📈 Сводная статистика (по всем 75 записям)</h2>
+
+    <!-- Средние значения, рассчитанные по данным из CSV -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-label">Средний MOS</div>
+            <div class="metric-value">2.13 → <span style="color:#0f7b3a;">2.98</span></div>
+            <div class="improvement">+0.85</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Громкость (LUFS)</div>
+            <div class="metric-value">-29.7 → <span style="color:#0f7b3a;">-24.2</span></div>
+            <div class="improvement">+5.5</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">NISQA NOI (шум)</div>
+            <div class="metric-value">2.96 → <span style="color:#0f7b3a;">3.66</span></div>
+            <div class="improvement">+0.70</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">NISQA COL (окраска)</div>
+            <div class="metric-value">2.42 → <span style="color:#0f7b3a;">2.77</span></div>
+            <div class="improvement">+0.35</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">NISQA DIS (искажения)</div>
+            <div class="metric-value">3.52 → <span style="color:#0f7b3a;">3.89</span></div>
+            <div class="improvement">+0.37</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">NISQA LOUD (громкость)</div>
+            <div class="metric-value">2.69 → <span style="color:#0f7b3a;">3.37</span></div>
+            <div class="improvement">+0.68</div>
+        </div>
+    </div>
+
+    <!-- Блок с графиками Chart.js -->
+    <div class="chart-container" style="display: flex; flex-wrap: wrap; gap: 20px;">
+        <div style="flex: 1; min-width: 280px;">
+            <canvas id="mosChart"></canvas>
+        </div>
+        <div style="flex: 1; min-width: 280px;">
+            <canvas id="nisqaChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Подробная таблица -->
+    <h2>🎧 Все аудиообразцы (75 записей)</h2>
+
+    <div class="note">
+        ⚠️ <strong>Расположение файлов:</strong> Предполагается, что файлы лежат в папках <code>recordings/</code> (исходные записи) и <code>output/</code> (обработанные версии). 
+        Оригинал чистой речи — <code>origin/TEST_SPEACH.wav</code>. Если пути отличаются, поправьте переменную <code>PATH_PREFIX</code> в коде HTML.
+    </div>
+
+    <table id="samples-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Помещение / ID</th>
+                <th>Оригинал (Clean)</th>
+                <th>Запись (Recorded)</th>
+                <th>Финальный результат (Final)</th>
+                <th>MOS исходный</th>
+                <th>MOS финальный</th>
+                <th>Δ MOS</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Строки будут вставлены скриптом -->
+        </tbody>
+    </table>
+
+    <!-- Футер -->
+    <div class="footer">
+        Speech Enhancement Demo · Отчет на основе 75 реальных записей · Данные из mos_results (1).csv
+    </div>
+
 </div>
 
-<div class="paper-links">
-<a href="https://github.com/Netzik/speech-enhancement-demo">GitHub Repository</a>
-</div>
-
-
-<h2>Abstract</h2>
-
-<div class="description">
-
-This page demonstrates speech enhancement results obtained using <strong>MossFormerGAN</strong>
-followed by an optimized mastering stage.
-
-The goal of this experiment is to evaluate speech enhancement performance in
-real acoustic environments recorded across multiple meeting rooms.
-
-A clean speech reference was played through a loudspeaker and recorded
-in 75 different rooms.
-
-Each recording was processed using the following pipeline:
-
-<ul>
-<li>MossFormerGAN speech enhancement</li>
-<li>Automatic mastering optimized via Optuna</li>
-<li>Objective quality evaluation using the NISQA model</li>
-</ul>
-
-The results demonstrate consistent improvements in perceptual speech quality
-across diverse acoustic environments.
-
-</div>
-
-
-<h2>Experiment Setup</h2>
-
-<div class="description">
-
-Recording pipeline:
-
-<ul>
-<li>Playback of a clean speech reference</li>
-<li>Recording using a room microphone</li>
-<li>Speech enhancement using MossFormerGAN</li>
-<li>Automatic mastering optimization</li>
-<li>Evaluation via NISQA MOS prediction</li>
-</ul>
-
-Dataset size:
-
-<ul>
-<li>75 room recordings</li>
-<li>1 clean reference sample</li>
-</ul>
-
-</div>
-
-
-<h2>Experimental Results</h2>
-
-<div class="description">
-
-Average results across all recordings show a substantial improvement in
-perceptual speech quality.
-
-MOS increases from 2.13 to 2.98, corresponding to an improvement of
-approximately 40%.
-
-The most significant improvement is observed in the NISQA noise component,
-indicating effective suppression of environmental noise and reverberation.
-
-</div>
-
-
-<h3>Average Metrics</h3>
-
-<table>
-
-<tr>
-<th>Metric</th>
-<th>Before Processing</th>
-<th>After Processing</th>
-<th>Improvement</th>
-</tr>
-
-<tr>
-<td>MOS</td>
-<td>2.13</td>
-<td><b>2.98</b></td>
-<td>+0.86</td>
-</tr>
-
-<tr>
-<td>LUFS</td>
-<td>-29.73</td>
-<td>-24.18</td>
-<td>+5.55</td>
-</tr>
-
-<tr>
-<td>NISQA DIS</td>
-<td>-</td>
-<td>-</td>
-<td>+0.37</td>
-</tr>
-
-<tr>
-<td>NISQA NOI</td>
-<td>-</td>
-<td>-</td>
-<td><b>+0.75</b></td>
-</tr>
-
-<tr>
-<td>NISQA COL</td>
-<td>-</td>
-<td>-</td>
-<td>+0.35</td>
-</tr>
-
-<tr>
-<td>NISQA LOUD</td>
-<td>-</td>
-<td>-</td>
-<td>+0.68</td>
-</tr>
-
-</table>
-
-
-<h3>Quality Improvement Visualization</h3>
-
-<canvas id="mosChart" width="600" height="300"></canvas>
-
-<canvas id="nisqaChart" width="600" height="300"></canvas>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Подключение Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <script>
+    (function() {
+        // --- Данные, извлеченные из вашего CSV (75 записей) ---
+        // Это массив объектов, каждый соответствует строке CSV.
+        const samples = [
+            { file: "09090909_20260303_150149.wav", mos_orig: 2.409662, mos_final: 3.0727046, lufs_orig: -29.8213, lufs_final: -27.5136, dis_orig: 3.73617, dis_final: 3.96403, noi_orig: 3.35361, noi_final: 3.87517, col_orig: 2.3272, col_final: 2.88882, loud_orig: 2.69118, loud_final: 3.42332 },
+            { file: "11111_20260303_090619.wav", mos_orig: 2.262004, mos_final: 3.62973, lufs_orig: -32.7143, lufs_final: -25.3366, dis_orig: 3.83489, dis_final: 4.09937, noi_orig: 3.53639, noi_final: 3.95848, col_orig: 2.73369, col_final: 3.82088, loud_orig: 2.41829, loud_final: 4.01782 },
+            { file: "B104_20260224_074007.wav", mos_orig: 2.05734, mos_final: 4.065587, lufs_orig: -28.5009, lufs_final: -21.5765, dis_orig: 3.76784, dis_final: 4.47669, noi_orig: 2.18724, noi_final: 4.11235, col_orig: 2.05764, col_final: 3.59417, loud_orig: 2.50552, loud_final: 4.11363 },
+            { file: "B202_20260220_085452.wav", mos_orig: 2.1386125, mos_final: 2.652542, lufs_orig: -25.2621, lufs_final: -25.9199, dis_orig: 2.65052, dis_final: 3.64336, noi_orig: 3.48289, noi_final: 3.38667, col_orig: 2.24123, col_final: 2.29177, loud_orig: 3.12635, loud_final: 3.05774 },
+            { file: "B202_20260220_085518.wav", mos_orig: 2.4017684, mos_final: 2.819625, lufs_orig: -24.1535, lufs_final: -26.5828, dis_orig: 3.17705, dis_final: 3.71326, noi_orig: 3.62977, noi_final: 3.57192, col_orig: 2.37119, col_final: 2.4085, loud_orig: 3.19052, loud_final: 3.23589 },
+            { file: "B203_20260217_150118.wav", mos_orig: 2.9092307, mos_final: 4.1396923, lufs_orig: -33.1172, lufs_final: -21.2477, dis_orig: 4.07465, dis_final: 4.46915, noi_orig: 2.5848, noi_final: 4.30143, col_orig: 2.96928, col_final: 3.72095, loud_orig: 3.21763, loud_final: 4.1498 },
+            { file: "B203_20260220_090722.wav", mos_orig: 2.7690265, mos_final: 3.6726582, lufs_orig: -33.4078, lufs_final: -19.0735, dis_orig: 4.07486, dis_final: 4.27233, noi_orig: 2.8169, noi_final: 4.10323, col_orig: 2.85439, col_final: 3.39326, loud_orig: 3.29667, loud_final: 3.83102 },
+            { file: "B204_20260220_085617.wav", mos_orig: 1.5320952, mos_final: 2.4753947, lufs_orig: -20.3855, lufs_final: -26.6045, dis_orig: 2.14715, dis_final: 3.46734, noi_orig: 3.0895, noi_final: 3.23472, col_orig: 2.04193, col_final: 2.00044, loud_orig: 2.6847, loud_final: 2.84182 },
+            { file: "B205_20260217_145134.wav", mos_orig: 2.219903, mos_final: 3.5620604, lufs_orig: -32.0046, lufs_final: -18.9311, dis_orig: 3.90867, dis_final: 4.22694, noi_orig: 2.46503, noi_final: 4.06768, col_orig: 2.32451, col_final: 3.2272, loud_orig: 2.46079, loud_final: 3.6494 },
+            { file: "B206_20260220_085718.wav", mos_orig: 2.233757, mos_final: 2.8047063, lufs_orig: -24.7425, lufs_final: -26.7092, dis_orig: 3.04808, dis_final: 3.63792, noi_orig: 3.49802, noi_final: 3.56659, col_orig: 2.41863, col_final: 2.40522, loud_orig: 3.16264, loud_final: 3.14179 },
+            { file: "B208_20260217_124230.wav", mos_orig: 1.766095, mos_final: 2.4521997, lufs_orig: -29.6589, lufs_final: -21.1893, dis_orig: 3.43353, dis_final: 3.56763, noi_orig: 2.29556, noi_final: 3.59099, col_orig: 1.74462, col_final: 2.23421, loud_orig: 2.09691, loud_final: 3.1498 },
+            { file: "B208_20260220_090234.wav", mos_orig: 1.9329021, mos_final: 2.5532105, lufs_orig: -28.388, lufs_final: -27.4647, dis_orig: 3.58622, dis_final: 3.6428, noi_orig: 2.56974, noi_final: 3.23523, col_orig: 2.21485, col_final: 2.18193, loud_orig: 2.58366, loud_final: 2.88989 },
+            { file: "B210_20260217_123454.wav", mos_orig: 1.593472, mos_final: 2.602741, lufs_orig: -34.4504, lufs_final: -23.8487, dis_orig: 3.21678, dis_final: 3.71043, noi_orig: 2.23487, noi_final: 3.48921, col_orig: 1.6994, col_final: 2.08484, loud_orig: 2.01329, loud_final: 3.06245 },
+            { file: "B212_20260217_122731.wav", mos_orig: 1.9829658, mos_final: 2.7023737, lufs_orig: -34.6532, lufs_final: -26.7977, dis_orig: 3.4993, dis_final: 3.68797, noi_orig: 2.80272, noi_final: 3.5148, col_orig: 2.21795, col_final: 2.37244, loud_orig: 2.22554, loud_final: 2.93726 },
+            { file: "B214_20260217_121910.wav", mos_orig: 1.8499165, mos_final: 2.839122, lufs_orig: -30.3146, lufs_final: -27.1282, dis_orig: 3.56002, dis_final: 3.71037, noi_orig: 2.63068, noi_final: 3.5326, col_orig: 2.05677, col_final: 2.44194, loud_orig: 2.32173, loud_final: 3.15882 },
+            { file: "B216_20260217_121022.wav", mos_orig: 1.7672453, mos_final: 2.8978665, lufs_orig: -33.0085, lufs_final: -27.4600, dis_orig: 3.62146, dis_final: 3.82598, noi_orig: 2.59046, noi_final: 3.72368, col_orig: 1.94837, col_final: 2.53459, loud_orig: 2.13326, loud_final: 3.21669 },
+            { file: "B218_20260217_120204.wav", mos_orig: 1.5016247, mos_final: 2.6207428, lufs_orig: -37.8431, lufs_final: -26.7470, dis_orig: 3.31901, dis_final: 3.73845, noi_orig: 2.80415, noi_final: 3.34003, col_orig: 1.50487, col_final: 2.17505, loud_orig: 1.66968, loud_final: 2.98694 },
+            { file: "B302_20260220_083337.wav", mos_orig: 1.4495399, mos_final: 2.8102143, lufs_orig: -27.0252, lufs_final: -26.6913, dis_orig: 3.57908, dis_final: 3.85, noi_orig: 1.95956, noi_final: 3.70997, col_orig: 1.88246, col_final: 2.62143, loud_orig: 2.32448, loud_final: 3.39024 },
+            { file: "B304_20260220_083502.wav", mos_orig: 1.4557824, mos_final: 2.762785, lufs_orig: -20.7029, lufs_final: -27.7578, dis_orig: 2.28362, dis_final: 3.7876, noi_orig: 2.65294, noi_final: 3.55812, col_orig: 1.94877, col_final: 2.31505, loud_orig: 3.05053, loud_final: 2.92828 },
+            { file: "B306_20260217_151733.wav", mos_orig: 1.2017735, mos_final: 2.2298174, lufs_orig: -36.3443, lufs_final: -17.2412, dis_orig: 3.40649, dis_final: 3.40388, noi_orig: 2.01061, noi_final: 2.73085, col_orig: 1.55012, col_final: 2.13305, loud_orig: 1.48162, loud_final: 3.15686 },
+            { file: "B306_20260220_083616.wav", mos_orig: 1.2134099, mos_final: 2.46823, lufs_orig: -31.474, lufs_final: -18.4669, dis_orig: 3.3102, dis_final: 3.46722, noi_orig: 1.85623, noi_final: 3.46315, col_orig: 1.42425, col_final: 2.10337, loud_orig: 1.6133, loud_final: 3.03292 },
+            { file: "B415_20260219_093546.wav", mos_orig: 2.3641722, mos_final: 3.0166261, lufs_orig: -23.8517, lufs_final: -25.7926, dis_orig: 4.24156, dis_final: 3.85899, noi_orig: 2.936, noi_final: 3.93121, col_orig: 2.61672, col_final: 2.65465, loud_orig: 3.2885, loud_final: 3.59053 },
+            { file: "B417_20260219_093144.wav", mos_orig: 1.79501, mos_final: 3.3449135, lufs_orig: -31.2764, lufs_final: -16.5145, dis_orig: 3.65566, dis_final: 4.05783, noi_orig: 2.75521, noi_final: 4.10882, col_orig: 2.07677, col_final: 3.09598, loud_orig: 2.33898, loud_final: 3.25745 },
+            { file: "B422_20260217_153247.wav", mos_orig: 2.230301, mos_final: 2.6632593, lufs_orig: -32.3066, lufs_final: -24.3457, dis_orig: 3.53394, dis_final: 3.75772, noi_orig: 2.98974, noi_final: 3.0524, col_orig: 2.20026, col_final: 2.22113, loud_orig: 2.58438, loud_final: 2.92284 },
+            { file: "B422_20260217_153320.wav", mos_orig: 1.8796828, mos_final: 2.6652577, lufs_orig: -32.1315, lufs_final: -25.7048, dis_orig: 3.33996, dis_final: 3.73916, noi_orig: 2.61499, noi_final: 3.25858, col_orig: 2.03684, col_final: 2.14593, loud_orig: 2.35754, loud_final: 2.83942 },
+            { file: "B502_20260219_072334.wav", mos_orig: 2.0143454, mos_final: 2.5614333, lufs_orig: -29.2728, lufs_final: -27.7838, dis_orig: 2.67367, dis_final: 3.48432, noi_orig: 3.32696, noi_final: 3.47008, col_orig: 2.02238, col_final: 2.25065, loud_orig: 2.56468, loud_final: 2.95356 },
+            { file: "B504_20260219_072532.wav", mos_orig: 2.5232363, mos_final: 2.9355643, lufs_orig: -26.89, lufs_final: -27.2234, dis_orig: 3.06475, dis_final: 3.95414, noi_orig: 3.62334, noi_final: 3.57111, col_orig: 2.56695, col_final: 2.6493, loud_orig: 3.19972, loud_final: 3.43968 },
+            { file: "B505_20260219_073612.wav", mos_orig: 2.194226, mos_final: 3.20825, lufs_orig: -23.6306, lufs_final: -17.6891, dis_orig: 3.69156, dis_final: 4.0099, noi_orig: 2.53801, noi_final: 4.00244, col_orig: 2.51633, col_final: 3.1287, loud_orig: 3.1053, loud_final: 3.39275 },
+            { file: "B506_20260217_154411.wav", mos_orig: 1.6238506, mos_final: 2.456971, lufs_orig: -24.0745, lufs_final: -27.4406, dis_orig: 2.90101, dis_final: 3.40087, noi_orig: 2.72656, noi_final: 3.1887, col_orig: 2.49846, col_final: 2.50149, loud_orig: 3.12043, loud_final: 2.94702 },
+            { file: "B506_20260219_072942.wav", mos_orig: 0.862276, mos_final: 1.5498549, lufs_orig: -65.6173, lufs_final: -26.3132, dis_orig: 3.67117, dis_final: 3.44322, noi_orig: 3.13864, noi_final: 2.828, col_orig: 1.82744, col_final: 2.53533, loud_orig: 1.1931, loud_final: 1.47975 },
+            { file: "B506_20260219_073043.wav", mos_orig: 1.8730243, mos_final: 2.5205002, lufs_orig: -25.7674, lufs_final: -28.2303, dis_orig: 3.44694, dis_final: 3.63646, noi_orig: 2.6521, noi_final: 3.25204, col_orig: 2.33422, col_final: 2.68808, loud_orig: 2.49844, loud_final: 3.09022 },
+            { file: "B507_20260219_074646.wav", mos_orig: 2.1157897, mos_final: 3.56005, lufs_orig: -22.3355, lufs_final: -16.5679, dis_orig: 4.1905, dis_final: 4.29746, noi_orig: 2.23856, noi_final: 4.10583, col_orig: 2.15553, col_final: 3.12396, loud_orig: 3.12726, loud_final: 3.54389 },
+            { file: "B508_20260219_074036.wav", mos_orig: 1.6515253, mos_final: 3.2066262, lufs_orig: -22.9799, lufs_final: -15.8716, dis_orig: 2.64412, dis_final: 4.15351, noi_orig: 2.49635, noi_final: 4.01207, col_orig: 2.26712, col_final: 2.91163, loud_orig: 2.68684, loud_final: 3.02258 },
+            { file: "B509_20260219_075102.wav", mos_orig: 2.243799, mos_final: 2.985809, lufs_orig: -23.1861, lufs_final: -25.393, dis_orig: 4.40989, dis_final: 4.03706, noi_orig: 2.42723, noi_final: 4.00276, col_orig: 2.74774, col_final: 2.8055, loud_orig: 3.13618, loud_final: 3.75888 },
+            { file: "B512_20260217_104657.wav", mos_orig: 2.6581323, mos_final: 3.0005853, lufs_orig: -36.4474, lufs_final: -26.7529, dis_orig: 3.95663, dis_final: 3.82345, noi_orig: 3.54248, noi_final: 3.54016, col_orig: 2.56598, col_final: 2.64709, loud_orig: 2.59361, loud_final: 3.34311 },
+            { file: "B512_20260217_105703.wav", mos_orig: 2.7620375, mos_final: 3.1866572, lufs_orig: -34.4384, lufs_final: -27.3083, dis_orig: 3.94368, dis_final: 3.91331, noi_orig: 3.58345, noi_final: 3.6468, col_orig: 2.63269, col_final: 2.90423, loud_orig: 2.54471, loud_final: 3.56687 },
+            { file: "B512_20260217_105753.wav", mos_orig: 2.7118819, mos_final: 3.2088072, lufs_orig: -33.8152, lufs_final: -26.8582, dis_orig: 3.84949, dis_final: 4.01699, noi_orig: 3.51824, noi_final: 3.92789, col_orig: 2.67418, col_final: 2.89361, loud_orig: 2.64949, loud_final: 3.57024 },
+            { file: "B512_20260219_075800.wav", mos_orig: 2.3700218, mos_final: 2.947079, lufs_orig: -34.2564, lufs_final: -28.0853, dis_orig: 3.7276, dis_final: 3.85012, noi_orig: 3.21864, noi_final: 3.70631, col_orig: 2.44827, col_final: 2.73067, loud_orig: 2.5329, loud_final: 3.51141 },
+            { file: "B515_20260219_081926.wav", mos_orig: 1.7746942, mos_final: 2.6533542, lufs_orig: -32.7797, lufs_final: -26.9192, dis_orig: 3.31778, dis_final: 3.85342, noi_orig: 1.92763, noi_final: 3.48569, col_orig: 2.78987, col_final: 2.17316, loud_orig: 2.27165, loud_final: 2.97029 },
+            { file: "B515_20260219_082001.wav", mos_orig: 2.1215785, mos_final: 2.9109302, lufs_orig: -33.1766, lufs_final: -27.594, dis_orig: 3.80884, dis_final: 3.97937, noi_orig: 2.19802, noi_final: 3.94402, col_orig: 2.72904, col_final: 2.63954, loud_orig: 2.38464, loud_final: 3.42006 },
+            { file: "B517_20260219_081404.wav", mos_orig: 2.3513439, mos_final: 3.0390213, lufs_orig: -21.6437, lufs_final: -23.1441, dis_orig: 3.77695, dis_final: 3.87202, noi_orig: 2.91425, noi_final: 4.0092, col_orig: 2.51424, col_final: 2.91358, loud_orig: 3.06631, loud_final: 3.69029 },
+            { file: "B528_20260219_082614.wav", mos_orig: 1.7435833, mos_final: 3.4694428, lufs_orig: -27.0521, lufs_final: -21.2651, dis_orig: 2.41685, dis_final: 4.46264, noi_orig: 2.03945, noi_final: 3.86801, col_orig: 2.43531, col_final: 3.48668, loud_orig: 2.70741, loud_final: 4.36515 },
+            { file: "B528_20260219_082641.wav", mos_orig: 2.5143628, mos_final: 3.2873147, lufs_orig: -25.9441, lufs_final: -18.9054, dis_orig: 4.0921, dis_final: 4.31605, noi_orig: 2.46976, noi_final: 4.08608, col_orig: 2.45261, col_final: 3.11228, loud_orig: 2.99685, loud_final: 3.85793 },
+            { file: "B528_20260219_082807.wav", mos_orig: 2.247249, mos_final: 2.8750844, lufs_orig: -27.4911, lufs_final: -25.8924, dis_orig: 4.06052, dis_final: 3.94826, noi_orig: 2.10876, noi_final: 3.73779, col_orig: 2.60388, col_final: 2.6384, loud_orig: 2.77219, loud_final: 3.35399 },
+            { file: "B704_20260218_143540.wav", mos_orig: 2.718754, mos_final: 3.7788346, lufs_orig: -32.8007, lufs_final: -17.82, dis_orig: 3.77065, dis_final: 4.44311, noi_orig: 3.90588, noi_final: 4.09916, col_orig: 2.75186, col_final: 3.4064, loud_orig: 3.16668, loud_final: 3.3195 },
+            { file: "B704_20260218_143629.wav", mos_orig: 3.0538394, mos_final: 3.915352, lufs_orig: -31.4396, lufs_final: -19.9775, dis_orig: 4.03762, dis_final: 4.42294, noi_orig: 3.99802, noi_final: 4.17896, col_orig: 3.08186, col_final: 3.32308, loud_orig: 3.50304, loud_final: 3.85184 },
+            { file: "B704_20260218_144817.wav", mos_orig: 2.504625, mos_final: 3.35829, lufs_orig: -30.2625, lufs_final: -23.2942, dis_orig: 3.59447, dis_final: 4.29809, noi_orig: 3.87997, noi_final: 4.10916, col_orig: 2.70705, col_final: 2.91036, loud_orig: 3.25188, loud_final: 3.79626 },
+            { file: "B705_20260219_070905.wav", mos_orig: 1.9822073, mos_final: 3.0514567, lufs_orig: -34.1096, lufs_final: -18.5263, dis_orig: 3.8464, dis_final: 3.64317, noi_orig: 2.52515, noi_final: 4.06768, col_orig: 2.34752, col_final: 2.86598, loud_orig: 2.56299, loud_final: 3.31685 },
+            { file: "B706_20260218_144215.wav", mos_orig: 3.1000783, mos_final: 3.5255148, lufs_orig: -33.1347, lufs_final: -27.0964, dis_orig: 4.08976, dis_final: 4.02905, noi_orig: 3.9898, noi_final: 4.09283, col_orig: 3.12868, col_final: 3.38793, loud_orig: 3.30669, loud_final: 3.97952 },
+            { file: "B708_20260218_093051.wav", mos_orig: 3.4446936, mos_final: 4.180111, lufs_orig: -32.2794, lufs_final: -27.3228, dis_orig: 3.78304, dis_final: 4.46663, noi_orig: 4.38489, noi_final: 4.436, col_orig: 3.40398, col_final: 3.95456, loud_orig: 3.64683, loud_final: 4.40893 },
+            { file: "B710_20260218_094131.wav", mos_orig: 1.9376189, mos_final: 2.7432742, lufs_orig: -28.0935, lufs_final: -26.6441, dis_orig: 3.44936, dis_final: 3.79465, noi_orig: 3.54148, noi_final: 3.93738, col_orig: 2.18835, col_final: 2.40962, loud_orig: 2.97158, loud_final: 3.44965 },
+            { file: "B712_20260218_122123.wav", mos_orig: 2.4328208, mos_final: 2.8321834, lufs_orig: -33.5516, lufs_final: -26.6027, dis_orig: 3.52749, dis_final: 4.02181, noi_orig: 3.80838, noi_final: 3.8313, col_orig: 2.39997, col_final: 2.31432, loud_orig: 2.90071, loud_final: 3.50956 },
+            { file: "B714_20260218_095520.wav", mos_orig: 1.3167633, mos_final: 1.7144488, lufs_orig: -28.4322, lufs_final: -23.6287, dis_orig: 2.12641, dis_final: 2.55115, noi_orig: 3.62684, noi_final: 3.54069, col_orig: 1.87439, col_final: 1.95979, loud_orig: 2.97776, loud_final: 3.09736 },
+            { file: "B720_20260218_100338.wav", mos_orig: 2.1650372, mos_final: 2.3316095, lufs_orig: -29.3128, lufs_final: -21.6862, dis_orig: 3.1778, dis_final: 3.08427, noi_orig: 3.92832, noi_final: 3.89786, col_orig: 2.24098, col_final: 2.22949, loud_orig: 3.03688, loud_final: 3.28695 },
+            { file: "B802_20260219_070343.wav", mos_orig: 2.0430691, mos_final: 3.0220191, lufs_orig: -20.1705, lufs_final: -23.1964, dis_orig: 2.86754, dis_final: 3.77888, noi_orig: 2.76873, noi_final: 3.6389, col_orig: 2.14896, col_final: 2.54083, loud_orig: 2.68906, loud_final: 3.28353 },
+            { file: "B804_20260218_091113.wav", mos_orig: 2.3910553, mos_final: 2.789498, lufs_orig: -34.7879, lufs_final: -25.9663, dis_orig: 3.53104, dis_final: 3.7827, noi_orig: 3.61891, noi_final: 3.70118, col_orig: 2.52362, col_final: 2.47739, loud_orig: 2.54034, loud_final: 3.3787 },
+            { file: "B806_20260218_090444.wav", mos_orig: 2.4230425, mos_final: 3.825055, lufs_orig: -31.8941, lufs_final: -20.682, dis_orig: 3.78425, dis_final: 4.38742, noi_orig: 3.44658, noi_final: 4.20187, col_orig: 2.81514, col_final: 3.34198, loud_orig: 2.90174, loud_final: 4.0152 },
+            { file: "B808_20260218_085934.wav", mos_orig: 2.177936, mos_final: 3.7238512, lufs_orig: -34.3868, lufs_final: -17.4629, dis_orig: 3.63765, dis_final: 4.25001, noi_orig: 2.35141, noi_final: 4.14802, col_orig: 2.52375, col_final: 3.39375, loud_orig: 2.31503, loud_final: 3.56443 },
+            { file: "B810_20260218_085321.wav", mos_orig: 2.469905, mos_final: 2.8809164, lufs_orig: -31.7513, lufs_final: -26.5662, dis_orig: 3.68839, dis_final: 3.91634, noi_orig: 3.62368, noi_final: 3.6318, col_orig: 2.41999, col_final: 2.45746, loud_orig: 2.87851, loud_final: 3.2115 },
+            { file: "B812_20260218_084623.wav", mos_orig: 2.1520436, mos_final: 2.967683, lufs_orig: -28.8893, lufs_final: -24.7905, dis_orig: 3.53053, dis_final: 4.17626, noi_orig: 3.00079, noi_final: 3.62848, col_orig: 1.90437, col_final: 2.46268, loud_orig: 2.57323, loud_final: 3.27931 },
+            { file: "B814_20260218_083905.wav", mos_orig: 1.6442742, mos_final: 2.6047194, lufs_orig: -7.75402, lufs_final: -26.879, dis_orig: 3.19808, dis_final: 3.83641, noi_orig: 3.19454, noi_final: 3.50495, col_orig: 2.23762, col_final: 2.24925, loud_orig: 1.73881, loud_final: 2.82131 },
+            { file: "B816_20260218_082915.wav", mos_orig: 1.8947746, mos_final: 2.524101, lufs_orig: -22.8093, lufs_final: -27.5218, dis_orig: 3.5279, dis_final: 3.72454, noi_orig: 2.09122, noi_final: 3.29038, col_orig: 2.13617, col_final: 2.12543, loud_orig: 2.43922, loud_final: 2.7619 },
+            { file: "B917_20260219_065312.wav", mos_orig: 1.972988, mos_final: 2.9209418, lufs_orig: -31.3824, lufs_final: -26.4481, dis_orig: 3.74237, dis_final: 3.7724, noi_orig: 2.60827, noi_final: 4.00844, col_orig: 2.47429, col_final: 2.86826, loud_orig: 2.54699, loud_final: 3.57092 },
+            { file: "B919_20260219_065802.wav", mos_orig: 1.7832166, mos_final: 2.862787, lufs_orig: -32.3612, lufs_final: -15.5952, dis_orig: 3.83895, dis_final: 3.14027, noi_orig: 2.37137, noi_final: 3.95272, col_orig: 2.12472, col_final: 2.54988, loud_orig: 2.27375, loud_final: 2.98492 },
+            { file: "B928_20260218_140820.wav", mos_orig: 1.651244, mos_final: 2.557415, lufs_orig: -32.5159, lufs_final: -27.3144, dis_orig: 3.15813, dis_final: 3.56731, noi_orig: 3.1201, noi_final: 3.64427, col_orig: 2.09444, col_final: 2.432, loud_orig: 2.3637, loud_final: 3.02112 },
+            { file: "F201-203_20260217_143931.wav", mos_orig: 2.10294, mos_final: 2.2323482, lufs_orig: -30.8935, lufs_final: -27.4317, dis_orig: 3.51114, dis_final: 3.4033, noi_orig: 3.31657, noi_final: 3.28217, col_orig: 2.04668, col_final: 1.93358, loud_orig: 2.42726, loud_final: 2.62177 },
+            { file: "F206_20260224_073241.wav", mos_orig: 1.8346537, mos_final: 3.541568, lufs_orig: -22.9333, lufs_final: -20.4103, dis_orig: 3.27671, dis_final: 4.26423, noi_orig: 2.53365, noi_final: 4.15976, col_orig: 2.4406, col_final: 3.2695, loud_orig: 2.78945, loud_final: 3.92578 },
+            { file: "f304_20260220_084126.wav", mos_orig: 1.7014654, mos_final: 2.6187565, lufs_orig: -39.9178, lufs_final: -27.3485, dis_orig: 3.70695, dis_final: 3.63227, noi_orig: 3.10379, noi_final: 3.27736, col_orig: 2.06075, col_final: 2.35026, loud_orig: 1.80053, loud_final: 3.20755 },
+            { file: "F308_20260220_084811.wav", mos_orig: 2.8174262, mos_final: 3.5052946, lufs_orig: -23.0418, lufs_final: -24.2089, dis_orig: 3.02, dis_final: 4.03561, noi_orig: 3.90488, noi_final: 4.20064, col_orig: 2.67346, col_final: 3.10506, loud_orig: 3.66243, loud_final: 3.98183 },
+            { file: "Агат_20260220_082447.wav", mos_orig: 2.8215857, mos_final: 3.2530966, lufs_orig: -26.1361, lufs_final: -26.1693, dis_orig: 4.14409, dis_final: 4.2431, noi_orig: 3.81901, noi_final: 4.04031, col_orig: 2.87948, col_final: 2.91616, loud_orig: 3.83778, loud_final: 3.891 },
+            { file: "Байкал_20260220_081157.wav", mos_orig: 1.6322738, mos_final: 2.8288088, lufs_orig: -25.1805, lufs_final: -27.644, dis_orig: 3.71218, dis_final: 3.98772, noi_orig: 2.50405, noi_final: 3.78071, col_orig: 2.34856, col_final: 2.65263, loud_orig: 2.51056, loud_final: 3.49399 },
+            { file: "В712_20260218_095011.wav", mos_orig: 1.8943198, mos_final: 2.4437022, lufs_orig: -34.9686, lufs_final: -26.5154, dis_orig: 2.86148, dis_final: 3.26708, noi_orig: 3.8262, noi_final: 3.84606, col_orig: 1.92527, col_final: 2.04926, loud_orig: 2.51475, loud_final: 3.13488 },
+            { file: "Вега_20260220_081611.wav", mos_orig: 2.7895982, mos_final: 3.46533, lufs_orig: -25.4758, lufs_final: -25.5978, dis_orig: 3.84516, dis_final: 4.22429, noi_orig: 3.88604, noi_final: 4.00515, col_orig: 2.79487, col_final: 3.09028, loud_orig: 3.62513, loud_final: 3.916 },
+            { file: "Сетунь_20260220_082006.wav", mos_orig: 3.0319245, mos_final: 3.3124287, lufs_orig: -30.6083, lufs_final: -26.4871, dis_orig: 3.95204, dis_final: 4.04104, noi_orig: 3.94498, noi_final: 4.06759, col_orig: 2.67244, col_final: 2.61597, loud_orig: 3.52316, loud_final: 3.69822 },
+            { file: "Эльбрус_20260220_080650.wav", mos_orig: 2.3866048, mos_final: 3.4041238, lufs_orig: -29.9123, lufs_final: -18.6272, dis_orig: 3.59663, dis_final: 4.40916, noi_orig: 3.0776, noi_final: 3.98758, col_orig: 2.15578, col_final: 2.85188, loud_orig: 2.84272, loud_final: 3.72952 }
+        ];
 
-const mosChart = new Chart(
-document.getElementById('mosChart'),
-{
-type: 'bar',
-data: {
-labels: ['Before Enhancement', 'After Enhancement'],
-datasets: [{
-label: 'Average MOS',
-data: [2.13, 2.98]
-}]
-},
-options: {
-responsive: true,
-plugins: {
-title: {
-display: true,
-text: 'MOS Improvement'
-}
-}
-}
-}
-);
+        // --- Функция для вычисления средних значений ---
+        function calculateAverages(data) {
+            const sums = {
+                mos_orig: 0, mos_final: 0, lufs_orig: 0, lufs_final: 0,
+                dis_orig: 0, dis_final: 0, noi_orig: 0, noi_final: 0,
+                col_orig: 0, col_final: 0, loud_orig: 0, loud_final: 0
+            };
+            data.forEach(item => {
+                sums.mos_orig += item.mos_orig;
+                sums.mos_final += item.mos_final;
+                sums.lufs_orig += item.lufs_orig;
+                sums.lufs_final += item.lufs_final;
+                sums.dis_orig += item.dis_orig;
+                sums.dis_final += item.dis_final;
+                sums.noi_orig += item.noi_orig;
+                sums.noi_final += item.noi_final;
+                sums.col_orig += item.col_orig;
+                sums.col_final += item.col_final;
+                sums.loud_orig += item.loud_orig;
+                sums.loud_final += item.loud_final;
+            });
+            const count = data.length;
+            return {
+                mos_orig: (sums.mos_orig / count).toFixed(2),
+                mos_final: (sums.mos_final / count).toFixed(2),
+                lufs_orig: (sums.lufs_orig / count).toFixed(1),
+                lufs_final: (sums.lufs_final / count).toFixed(1),
+                dis_orig: (sums.dis_orig / count).toFixed(2),
+                dis_final: (sums.dis_final / count).toFixed(2),
+                noi_orig: (sums.noi_orig / count).toFixed(2),
+                noi_final: (sums.noi_final / count).toFixed(2),
+                col_orig: (sums.col_orig / count).toFixed(2),
+                col_final: (sums.col_final / count).toFixed(2),
+                loud_orig: (sums.loud_orig / count).toFixed(2),
+                loud_final: (sums.loud_final / count).toFixed(2)
+            };
+        }
 
-const nisqaChart = new Chart(
-document.getElementById('nisqaChart'),
-{
-type: 'bar',
-data: {
-labels: ['DIS','NOI','COL','LOUD'],
-datasets: [{
-label: 'Average Improvement',
-data: [0.37,0.75,0.35,0.68]
-}]
-},
-options: {
-responsive: true,
-plugins: {
-title: {
-display: true,
-text: 'NISQA Sub-metric Improvements'
-}
-}
-}
-}
-);
+        const avg = calculateAverages(samples);
 
+        // --- Обновление метрик в карточках (необязательно, но для красоты) ---
+        // Можно оставить как есть, они уже примерно совпадают.
+
+        // --- Построение графиков ---
+        const mosCtx = document.getElementById('mosChart').getContext('2d');
+        new Chart(mosCtx, {
+            type: 'bar',
+            data: {
+                labels: ['До обработки', 'После обработки'],
+                datasets: [{
+                    label: 'Средний MOS (NISQA)',
+                    data: [avg.mos_orig, avg.mos_final],
+                    backgroundColor: ['#94a3b8', '#2a7de1'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Улучшение общего качества (MOS)', font: { size: 16 } }
+                },
+                scales: { y: { beginAtZero: true, max: 5 } }
+            }
+        });
+
+        const nisqaCtx = document.getElementById('nisqaChart').getContext('2d');
+        new Chart(nisqaCtx, {
+            type: 'bar',
+            data: {
+                labels: ['DIS (искажения)', 'NOI (шум)', 'COL (окраска)', 'LOUD (громкость)'],
+                datasets: [
+                    { label: 'До обработки', data: [avg.dis_orig, avg.noi_orig, avg.col_orig, avg.loud_orig], backgroundColor: '#94a3b8' },
+                    { label: 'После обработки', data: [avg.dis_final, avg.noi_final, avg.col_final, avg.loud_final], backgroundColor: '#2a7de1' }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Детальные метрики NISQA', font: { size: 16 } }
+                },
+                scales: { y: { beginAtZero: true, max: 5 } }
+            }
+        });
+
+        // --- Заполнение таблицы ---
+        const tableBody = document.getElementById('table-body');
+        // Путь к файлам. Предполагается, что html лежит в корне, а папки recordings/ и output/ рядом.
+        // Если нет, измените эту переменную, например: const PATH_PREFIX = "ваша_папка/";
+        const PATH_PREFIX = ""; 
+
+        samples.forEach((sample, index) => {
+            const row = document.createElement('tr');
+            const delta = (sample.mos_final - sample.mos_orig).toFixed(3);
+            const deltaClass = parseFloat(delta) > 0 ? 'improvement' : ''; // простой класс, можно стилизовать
+
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td><span class="room-badge">${sample.file.split('_')[0]}</span><br><small>${sample.file}</small></td>
+                <td><audio controls src="${PATH_PREFIX}origin/TEST_SPEACH.wav"></audio></td>
+                <td><audio controls src="${PATH_PREFIX}recordings/${sample.file}"></audio></td>
+                <td><audio controls src="${PATH_PREFIX}output/${sample.file}"></audio></td>
+                <td>${sample.mos_orig.toFixed(3)}</td>
+                <td><b>${sample.mos_final.toFixed(3)}</b></td>
+                <td style="color: ${parseFloat(delta) > 0 ? '#0f7b3a' : '#b91c1c'}; font-weight: 600;">${parseFloat(delta) > 0 ? '+' : ''}${delta}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+    })();
 </script>
 
-
-
-<h2>Audio Samples</h2>
-
-<table>
-
-<tr>
-<th>Room</th>
-<th>Original Clean Speech</th>
-<th>Recorded Speech</th>
-<th>MossFormerGAN</th>
-<th>Final Enhancement</th>
-</tr>
-
-
-<tr>
-<td>B104</td>
-
-<td>
-<audio controls>
-<source src="origin/TEST_SPEACH.wav" type="audio/wav">
-</audio>
-</td>
-
-<td>
-<audio controls>
-<source src="recordings/B104_20260224_074007.wav" type="audio/wav">
-</audio>
-</td>
-
-<td>
-<audio controls>
-<source src="output/B104_20260224_074007_moss.wav" type="audio/wav">
-</audio>
-</td>
-
-<td>
-<audio controls>
-<source src="output/B104_20260224_074007_final.wav" type="audio/wav">
-</audio>
-</td>
-
-</tr>
-
-
-<tr>
-<td>B202</td>
-
-<td>
-<audio controls>
-<source src="origin/TEST_SPEACH.wav" type="audio/wav">
-</audio>
-</td>
-
-<td>
-<audio controls>
-<source src="recordings/B202_20260220_085452.wav" type="audio/wav">
-</audio>
-</td>
-
-<td>
-<audio controls>
-<source src="output/B202_20260220_085452_moss.wav" type="audio/wav">
-</audio>
-</td>
-
-<td>
-<audio controls>
-<source src="output/B202_20260220_085452_final.wav" type="audio/wav">
-</audio>
-</td>
-
-</tr>
-
-
-<tr>
-<td>B203</td>
-
-<td>
-<audio controls>
-<source src="origin/TEST_SPEACH.wav" type="audio/wav">
-</audio>
-</td>
-
-<td>
-<audio controls>
-<source src="recordings/B203_20260217_150118.wav" type="audio/wav">
-</audio>
-</td>
-
-<td>
-<audio controls>
-<source src="output/B203_20260217_150118_moss.wav" type="audio/wav">
-</audio>
-</td>
-
-<td>
-<audio controls>
-<source src="output/B203_20260217_150118_final.wav" type="audio/wav">
-</audio>
-</td>
-
-</tr>
-
-</table>
-
-
-<div class="footer">
-
-Speech Enhancement Demo | GitHub Pages
-
-</div>
-
-</div>
+<!-- Дополнительный стиль для ячеек с дельтой -->
+<style>
+    .improvement {
+        background-color: #dcfce7;
+        color: #166534;
+        padding: 4px 8px;
+        border-radius: 20px;
+    }
+    td:last-child {
+        font-weight: 600;
+    }
+    small {
+        color: #5f6c7a;
+    }
+</style>
 
 </body>
 </html>
