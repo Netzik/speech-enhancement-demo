@@ -230,7 +230,7 @@
     </div>
 
     <div class="paper-links">
-        <a href="#">📁 GitHub Репозиторий</a>
+        <a href="https://github.com/Netzik/speech-enhancement-demo">📁 GitHub Репозиторий</a>
         <a href="#">📊 Исходные данные (CSV)</a>
     </div>
 
@@ -262,9 +262,11 @@
     <h2>🎧 Все аудиообразцы (73 записи)</h2>
 
     <div class="note">
-        ⚠️ <strong>Расположение файлов:</strong> Файлы должны находиться в папках <code>recordings/</code> (исходные записи) и <code>output/</code> (обработанные версии). 
-        Оригинал чистой речи — <code>origin/TEST_SPEACH.wav</code>.<br>
-        <strong>Важно:</strong> Если файлы не воспроизводятся, проверьте что папки <code>recordings</code> и <code>output</code> находятся в той же директории, что и этот HTML файл.
+        ⚠️ <strong>Расположение файлов:</strong><br>
+        • Оригинал чистой речи — <code>origin/TEST_SPEACH.wav</code><br>
+        • Исходные записи — <code>recordings/имя_файла.wav</code><br>
+        • Финальные результаты — <code>output/имя_файла_final.wav</code> (с суффиксом _final)<br>
+        <strong>Пример:</strong> B202_20260220_085518.wav → B202_20260220_085518_final.wav
     </div>
 
     <table id="samples-table">
@@ -508,17 +510,19 @@
         // --- Заполнение таблицы ---
         const tableBody = document.getElementById('table-body');
         
-        // Просто используем относительные пути с прямыми слешами
-        // Файлы должны лежать в папках recordings/ и output/ рядом с HTML
-
+        // Пути к файлам (исправлено: для финальных файлов добавляем _final)
         samples.forEach((sample, index) => {
             const row = document.createElement('tr');
             const delta = (sample.mos_final - sample.mos_orig).toFixed(3);
             
+            // Получаем имя файла без расширения для добавления _final
+            const fileNameWithoutExt = sample.file.replace('.wav', '');
+            
             // Формируем пути к файлам
             const cleanPath = 'origin/TEST_SPEACH.wav';
             const recordedPath = 'recordings/' + sample.file;
-            const finalPath = 'output/' + sample.file;
+            // ВАЖНО: для финальных файлов добавляем _final перед .wav
+            const finalPath = 'output/' + fileNameWithoutExt + '_final.wav';
 
             row.innerHTML = `
                 <td>${index + 1}</td>
@@ -537,8 +541,18 @@
         document.querySelectorAll('audio').forEach(audio => {
             audio.addEventListener('error', function(e) {
                 console.error('Ошибка загрузки аудио:', this.src);
-                // Можно добавить визуальный индикатор ошибки
                 this.style.border = '1px solid red';
+                // Добавляем подсказку
+                const parent = this.parentElement;
+                if (!parent.querySelector('.error-tip')) {
+                    const tip = document.createElement('div');
+                    tip.className = 'error-tip';
+                    tip.style.color = '#b91c1c';
+                    tip.style.fontSize = '11px';
+                    tip.style.marginTop = '2px';
+                    tip.textContent = 'Файл не найден';
+                    parent.appendChild(tip);
+                }
             });
         });
 
