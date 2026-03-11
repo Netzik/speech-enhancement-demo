@@ -81,7 +81,7 @@
 
         audio {
             width: 220px;
-            height: 36px;
+            height: 40px;
             vertical-align: middle;
         }
 
@@ -212,6 +212,11 @@
                 min-width: 100%;
             }
         }
+        
+        /* Стиль для сообщения об ошибке аудио */
+        audio:error {
+            border: 1px solid red;
+        }
     </style>
 </head>
 
@@ -258,7 +263,8 @@
 
     <div class="note">
         ⚠️ <strong>Расположение файлов:</strong> Файлы должны находиться в папках <code>recordings/</code> (исходные записи) и <code>output/</code> (обработанные версии). 
-        Оригинал чистой речи — <code>origin/TEST_SPEACH.wav</code>.
+        Оригинал чистой речи — <code>origin/TEST_SPEACH.wav</code>.<br>
+        <strong>Важно:</strong> Если файлы не воспроизводятся, проверьте что папки <code>recordings</code> и <code>output</code> находятся в той же директории, что и этот HTML файл.
     </div>
 
     <table id="samples-table">
@@ -501,24 +507,39 @@
 
         // --- Заполнение таблицы ---
         const tableBody = document.getElementById('table-body');
-        // Путь к файлам. Используем прямые слеши
-        const PATH_PREFIX = ""; 
+        
+        // Просто используем относительные пути с прямыми слешами
+        // Файлы должны лежать в папках recordings/ и output/ рядом с HTML
 
         samples.forEach((sample, index) => {
             const row = document.createElement('tr');
             const delta = (sample.mos_final - sample.mos_orig).toFixed(3);
+            
+            // Формируем пути к файлам
+            const cleanPath = 'origin/TEST_SPEACH.wav';
+            const recordedPath = 'recordings/' + sample.file;
+            const finalPath = 'output/' + sample.file;
 
             row.innerHTML = `
                 <td>${index + 1}</td>
                 <td><span class="room-badge">${sample.file.split('_')[0]}</span><br><small>${sample.file}</small></td>
-                <td><audio controls src="${PATH_PREFIX}origin/TEST_SPEACH.wav" preload="none"></audio></td>
-                <td><audio controls src="${PATH_PREFIX}recordings/${sample.file}" preload="none"></audio></td>
-                <td><audio controls src="${PATH_PREFIX}output/${sample.file}" preload="none"></audio></td>
+                <td><audio controls src="${cleanPath}" preload="none"></audio></td>
+                <td><audio controls src="${recordedPath}" preload="none"></audio></td>
+                <td><audio controls src="${finalPath}" preload="none"></audio></td>
                 <td>${sample.mos_orig.toFixed(3)}</td>
                 <td><b>${sample.mos_final.toFixed(3)}</b></td>
                 <td style="color: ${parseFloat(delta) > 0 ? '#0f7b3a' : '#b91c1c'}; font-weight: 600;">${parseFloat(delta) > 0 ? '+' : ''}${delta}</td>
             `;
             tableBody.appendChild(row);
+        });
+
+        // Добавляем обработчик ошибок для аудио элементов
+        document.querySelectorAll('audio').forEach(audio => {
+            audio.addEventListener('error', function(e) {
+                console.error('Ошибка загрузки аудио:', this.src);
+                // Можно добавить визуальный индикатор ошибки
+                this.style.border = '1px solid red';
+            });
         });
 
     })();
@@ -541,6 +562,9 @@
     audio {
         width: 220px;
         height: 40px;
+    }
+    audio[style*="border"] {
+        border: 1px solid red !important;
     }
 </style>
 
