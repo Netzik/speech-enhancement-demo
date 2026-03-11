@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <title>Speech Enhancement Demo</title>
 
@@ -15,8 +16,13 @@ color:#222;
 }
 
 h1{
-font-size:34px;
+font-size:36px;
 margin-bottom:5px;
+}
+
+.subtitle{
+color:#555;
+margin-bottom:20px;
 }
 
 h2{
@@ -62,6 +68,10 @@ line-height:1.6;
 margin-top:10px;
 }
 
+canvas{
+margin-top:20px;
+}
+
 .footer{
 margin-top:50px;
 font-size:14px;
@@ -78,43 +88,210 @@ color:#777;
 
 <h1>Speech Enhancement Demo</h1>
 
-<div class="paper-links">
-<a href="https://github.com/Netzik/speech-enhancement-demo">GitHub</a>
+<div class="subtitle">
+Evaluation of MossFormerGAN Speech Enhancement in Real Acoustic Environments
 </div>
+
+<div class="paper-links">
+<a href="https://github.com/Netzik/speech-enhancement-demo">GitHub Repository</a>
+</div>
+
 
 <h2>Abstract</h2>
 
 <div class="description">
 
-This page demonstrates speech enhancement results obtained using <strong>MossFormerGAN</strong> followed by an optimized mastering stage.
+This page demonstrates speech enhancement results obtained using <strong>MossFormerGAN</strong>
+followed by an optimized mastering stage.
 
-The goal of this experiment is to evaluate how speech enhancement performs
-in real acoustic environments recorded across multiple meeting rooms.
+The goal of this experiment is to evaluate speech enhancement performance in
+real acoustic environments recorded across multiple meeting rooms.
 
-A clean speech reference was played and recorded in 75 different rooms.
-Each recording was processed using:
+A clean speech reference was played through a loudspeaker and recorded
+in 75 different rooms.
+
+Each recording was processed using the following pipeline:
 
 <ul>
 <li>MossFormerGAN speech enhancement</li>
-<li>Automatic mastering optimized via NISQA MOS prediction</li>
+<li>Automatic mastering optimized via Optuna</li>
+<li>Objective quality evaluation using the NISQA model</li>
 </ul>
 
-Objective metrics including MOS and NISQA sub-metrics were computed for
-each recording.
+The results demonstrate consistent improvements in perceptual speech quality
+across diverse acoustic environments.
 
 </div>
+
+
+<h2>Experiment Setup</h2>
+
+<div class="description">
+
+Recording pipeline:
+
+<ul>
+<li>Playback of a clean speech reference</li>
+<li>Recording using a room microphone</li>
+<li>Speech enhancement using MossFormerGAN</li>
+<li>Automatic mastering optimization</li>
+<li>Evaluation via NISQA MOS prediction</li>
+</ul>
+
+Dataset size:
+
+<ul>
+<li>75 room recordings</li>
+<li>1 clean reference sample</li>
+</ul>
+
+</div>
+
+
+<h2>Experimental Results</h2>
+
+<div class="description">
+
+Average results across all recordings show a substantial improvement in
+perceptual speech quality.
+
+MOS increases from 2.13 to 2.98, corresponding to an improvement of
+approximately 40%.
+
+The most significant improvement is observed in the NISQA noise component,
+indicating effective suppression of environmental noise and reverberation.
+
+</div>
+
+
+<h3>Average Metrics</h3>
+
+<table>
+
+<tr>
+<th>Metric</th>
+<th>Before Processing</th>
+<th>After Processing</th>
+<th>Improvement</th>
+</tr>
+
+<tr>
+<td>MOS</td>
+<td>2.13</td>
+<td><b>2.98</b></td>
+<td>+0.86</td>
+</tr>
+
+<tr>
+<td>LUFS</td>
+<td>-29.73</td>
+<td>-24.18</td>
+<td>+5.55</td>
+</tr>
+
+<tr>
+<td>NISQA DIS</td>
+<td>-</td>
+<td>-</td>
+<td>+0.37</td>
+</tr>
+
+<tr>
+<td>NISQA NOI</td>
+<td>-</td>
+<td>-</td>
+<td><b>+0.75</b></td>
+</tr>
+
+<tr>
+<td>NISQA COL</td>
+<td>-</td>
+<td>-</td>
+<td>+0.35</td>
+</tr>
+
+<tr>
+<td>NISQA LOUD</td>
+<td>-</td>
+<td>-</td>
+<td>+0.68</td>
+</tr>
+
+</table>
+
+
+<h3>Quality Improvement Visualization</h3>
+
+<canvas id="mosChart" width="600" height="300"></canvas>
+
+<canvas id="nisqaChart" width="600" height="300"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const mosChart = new Chart(
+document.getElementById('mosChart'),
+{
+type: 'bar',
+data: {
+labels: ['Before Enhancement', 'After Enhancement'],
+datasets: [{
+label: 'Average MOS',
+data: [2.13, 2.98]
+}]
+},
+options: {
+responsive: true,
+plugins: {
+title: {
+display: true,
+text: 'MOS Improvement'
+}
+}
+}
+}
+);
+
+const nisqaChart = new Chart(
+document.getElementById('nisqaChart'),
+{
+type: 'bar',
+data: {
+labels: ['DIS','NOI','COL','LOUD'],
+datasets: [{
+label: 'Average Improvement',
+data: [0.37,0.75,0.35,0.68]
+}]
+},
+options: {
+responsive: true,
+plugins: {
+title: {
+display: true,
+text: 'NISQA Sub-metric Improvements'
+}
+}
+}
+}
+);
+
+</script>
+
+
 
 <h2>Audio Samples</h2>
 
 <table>
 
 <tr>
-<th>Room Recording</th>
+<th>Room</th>
 <th>Original Clean Speech</th>
 <th>Recorded Speech</th>
 <th>MossFormerGAN</th>
 <th>Final Enhancement</th>
 </tr>
+
 
 <tr>
 <td>B104</td>
@@ -145,6 +322,7 @@ each recording.
 
 </tr>
 
+
 <tr>
 <td>B202</td>
 
@@ -173,6 +351,7 @@ each recording.
 </td>
 
 </tr>
+
 
 <tr>
 <td>B203</td>
@@ -205,21 +384,6 @@ each recording.
 
 </table>
 
-<h2>Experiment Setup</h2>
-
-<div class="description">
-
-Recording pipeline:
-
-<ul>
-<li>Playback of a clean speech reference</li>
-<li>Recording in multiple meeting rooms</li>
-<li>Speech enhancement via MossFormerGAN</li>
-<li>Automatic mastering optimized using Optuna</li>
-<li>Evaluation via NISQA MOS prediction</li>
-</ul>
-
-</div>
 
 <div class="footer">
 
