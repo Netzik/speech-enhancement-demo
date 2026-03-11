@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Улучшение речи с помощью MossFormerGAN — Отчет</title>
+    <title>Улучшение речи с помощью MossFormerGAN — Отчёт</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -43,6 +43,11 @@
             padding-bottom: 8px;
             color: #1e3a5f;
             font-weight: 500;
+        }
+
+        h3 {
+            color: #2a4a6b;
+            margin-top: 25px;
         }
 
         .paper-links a {
@@ -217,6 +222,78 @@
         audio:error {
             border: 1px solid red;
         }
+
+        /* Стили для отчёта */
+        .report-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stats-table {
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .stats-table td:first-child {
+            font-weight: 600;
+            color: #1e3a5f;
+            width: 40%;
+        }
+
+        .stats-table .positive {
+            color: #0f7b3a;
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            border-left: 4px solid #0ea5e9;
+            padding: 15px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 15px 0;
+        }
+
+        .warning-box {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 15px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 15px 0;
+        }
+
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 15px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 15px 0;
+        }
+
+        .key-insight {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #fefce8;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .key-insight::before {
+            content: "💡";
+            font-size: 1.2em;
+        }
+
+        ul.insights {
+            padding-left: 20px;
+        }
+
+        ul.insights li {
+            margin: 8px 0;
+        }
     </style>
 </head>
 
@@ -237,18 +314,273 @@
     <h2>📘 О проекте</h2>
     <div class="description">
         <p>В этом эксперименте оценивается способность нейросетевого подавления шумов <strong>MossFormerGAN</strong> (с последующим автоматическим мастерингом) восстанавливать качество речи, записанной в сложных акустических условиях.</p>
-        <p><strong>Методика:</strong> эталонная чистая речь воспроизводилась через громкоговоритель и записывалась в 73 различных помещениях (офисы, переговорные, холлы). Каждая запись была обработана единым пайплайном: улучшение речи MossFormerGAN → автоматическая оптимизация громкости и тонального баланса (мастеринг) → оценка объективными метриками NISQA.</p>
-        <p>В таблице ниже представлены все 73 образца: оригинальная запись ("Recorded Speech") и результат после полной обработки ("Final Enhancement"). Для сравнения также доступна оригинальная чистая речь.</p>
+        <p><strong>Методика:</strong> эталонная чистая речь воспроизводилась через громкоговоритель и записывалась в 75 различных помещениях (офисы, переговорные, холлы). Каждая запись была обработана единым пайплайном: улучшение речи MossFormerGAN → автоматическая оптимизация громкости и тонального баланса (мастеринг) → оценка объективными метриками NISQA.</p>
+        <p>В таблице ниже представлены все 75 образцов: оригинальная запись ("Recorded Speech") и результат после полной обработки ("Final Enhancement"). Для сравнения также доступна оригинальная чистая речь.</p>
     </div>
 
-    <h2>📈 Сводная статистика (по всем 73 записям)</h2>
+    <!-- 🔥 НОВЫЙ РАЗДЕЛ: Детальный отчёт по анализу данных -->
+    <h2>📊 Детальный анализ результатов (75 файлов)</h2>
+    
+    <div class="report-section">
+        <h3>🎯 Ключевые показатели</h3>
+        
+        <table class="stats-table">
+            <tr>
+                <td>📁 Всего файлов</td>
+                <td><b>75</b></td>
+            </tr>
+            <tr>
+                <td>✅ Файлов с улучшением MOS</td>
+                <td class="positive"><b>75 / 75 (100%)</b></td>
+            </tr>
+            <tr>
+                <td>📈 Среднее улучшение MOS</td>
+                <td class="positive"><b>+0.86</b> (2.13 → 2.98)</td>
+            </tr>
+            <tr>
+                <td>🔊 Нормализация LUFS</td>
+                <td class="positive"><b>+5.5 дБ</b> (-29.7 → -24.2 дБ)</td>
+            </tr>
+            <tr>
+                <td>📉 Стабильность громкости (σ)</td>
+                <td class="positive"><b>6.68 → 3.75 дБ</b> (−44%)</td>
+            </tr>
+        </table>
 
-    <!-- Средние значения будут заполнены скриптом -->
+        <div class="success-box">
+            <strong>✅ Все улучшения статистически значимы</strong> (p &lt; 10⁻¹⁰, парный t-тест и критерий Уилкоксона)
+        </div>
+    </div>
+
+    <div class="report-section">
+        <h3>📈 Детальные метрики NISQA</h3>
+        
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th>Метрика</th>
+                    <th>Оригинал</th>
+                    <th>Финал</th>
+                    <th>Δ</th>
+                    <th>Улучшено</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>MOS</b> (общее качество)</td>
+                    <td>2.13</td>
+                    <td><b>2.98</b></td>
+                    <td class="positive">+0.86</td>
+                    <td>100.0%</td>
+                </tr>
+                <tr>
+                    <td><b>DIS</b> (искажения)</td>
+                    <td>3.51</td>
+                    <td><b>3.88</b></td>
+                    <td class="positive">+0.37</td>
+                    <td>82.7%</td>
+                </tr>
+                <tr>
+                    <td><b>NOI</b> (подавление шума)</td>
+                    <td>3.00</td>
+                    <td><b>3.75</b></td>
+                    <td class="positive">+0.75</td>
+                    <td>89.3%</td>
+                </tr>
+                <tr>
+                    <td><b>COL</b> (окраска сигнала)</td>
+                    <td>2.34</td>
+                    <td><b>2.70</b></td>
+                    <td class="positive">+0.35</td>
+                    <td>85.3%</td>
+                </tr>
+                <tr>
+                    <td><b>LOUD</b> (восприятие громкости)</td>
+                    <td>2.69</td>
+                    <td><b>3.37</b></td>
+                    <td class="positive">+0.68</td>
+                    <td>94.7%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="key-insight">
+            <strong>Наибольший вклад в улучшение MOS:</strong> подавление шума (NOI, +0.75) и восприятие громкости (LOUD, +0.68).
+        </div>
+    </div>
+
+    <div class="report-section">
+        <h3>🔊 Анализ нормализации громкости (LUFS)</h3>
+        
+        <table class="stats-table">
+            <tr>
+                <td>📊 Оригинал: mean / σ / диапазон</td>
+                <td><b>-29.7 дБ</b> / 6.68 дБ / [-65.6; -7.8] дБ</td>
+            </tr>
+            <tr>
+                <td>📊 Финал: mean / σ / диапазон</td>
+                <td><b>-24.2 дБ</b> / 3.75 дБ / [-28.2; -15.6] дБ</td>
+            </tr>
+            <tr>
+                <td>🎯 В целевом диапазоне (-23...-16 LUFS)</td>
+                <td><b>20 / 75 файлов (26.7%)</b></td>
+            </tr>
+        </table>
+
+        <div class="warning-box">
+            <strong>⚠️ Рекомендация:</strong> Только 26.7% файлов попали в идеальный диапазон громкости. 
+            Для production рекомендуется добавить финальный лимитер/гейн для точной настройки уровня.
+        </div>
+    </div>
+
+    <div class="report-section">
+        <h3>📊 Эффективность по качеству исходного сигнала</h3>
+        
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th>Категория MOS (оригинал)</th>
+                    <th>Файлов</th>
+                    <th>MOS до</th>
+                    <th>MOS после</th>
+                    <th>Δ MOS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🔴 Очень низкое (≤1.5)</td>
+                    <td>6</td>
+                    <td>1.25</td>
+                    <td><b>2.26</b></td>
+                    <td class="positive">+1.01</td>
+                </tr>
+                <tr>
+                    <td>🟠 Низкое (1.5–2.0)</td>
+                    <td>26</td>
+                    <td>1.78</td>
+                    <td><b>2.78</b></td>
+                    <td class="positive">+1.00</td>
+                </tr>
+                <tr>
+                    <td>🟡 Среднее (2.0–2.5)</td>
+                    <td>27</td>
+                    <td>2.25</td>
+                    <td><b>3.05</b></td>
+                    <td class="positive">+0.80</td>
+                </tr>
+                <tr>
+                    <td>🟢 Хорошее (2.5–3.0)</td>
+                    <td>12</td>
+                    <td>2.71</td>
+                    <td><b>3.40</b></td>
+                    <td class="positive">+0.69</td>
+                </tr>
+                <tr>
+                    <td>🔵 Отличное (&gt;3.0)</td>
+                    <td>4</td>
+                    <td>3.16</td>
+                    <td><b>3.73</b></td>
+                    <td class="positive">+0.58</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="key-insight">
+            <strong>Ключевой инсайт:</strong> Модель наиболее эффективна на сложных примерах — чем хуже исходное качество, тем больше относительное улучшение.
+        </div>
+    </div>
+
+    <div class="report-section">
+        <h3>🏆 Топ-5 файлов с наибольшим улучшением MOS</h3>
+        
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th>Файл</th>
+                    <th>MOS до</th>
+                    <th>MOS после</th>
+                    <th>Δ MOS</th>
+                    <th>Примечание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>B104_...074007.wav</code></td>
+                    <td>2.06</td>
+                    <td><b>4.07</b></td>
+                    <td class="positive">+2.01</td>
+                    <td>🥇 Лучший результат</td>
+                </tr>
+                <tr>
+                    <td><code>B528_...082614.wav</code></td>
+                    <td>1.74</td>
+                    <td><b>3.47</b></td>
+                    <td class="positive">+1.73</td>
+                    <td>Сильное подавление шума</td>
+                </tr>
+                <tr>
+                    <td><code>F206_...073241.wav</code></td>
+                    <td>1.83</td>
+                    <td><b>3.54</b></td>
+                    <td class="positive">+1.71</td>
+                    <td>Реверберация + шум</td>
+                </tr>
+                <tr>
+                    <td><code>B508_...074036.wav</code></td>
+                    <td>1.65</td>
+                    <td><b>3.21</b></td>
+                    <td class="positive">+1.56</td>
+                    <td>Низкая громкость</td>
+                </tr>
+                <tr>
+                    <td><code>B417_...093144.wav</code></td>
+                    <td>1.80</td>
+                    <td><b>3.34</b></td>
+                    <td class="positive">+1.55</td>
+                    <td>Комбинация артефактов</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="report-section">
+        <h3>⚠️ Проблемные кейсы и рекомендации</h3>
+        
+        <div class="warning-box">
+            <strong>Экстремально тихие записи:</strong><br>
+            Файл <code>B506_...072942.wav</code> имел LUFS = -65.6 дБ. После обработки: -26.3 дБ, MOS: 0.86 → 1.55.<br>
+            <em>Рекомендация:</em> Добавить предварительный гейн для записей тише -40 дБ.
+        </div>
+
+        <div class="warning-box">
+            <strong>Файлы с ухудшением отдельных метрик (13% случаев):</strong><br>
+            В 10 записях метрики DIS/NOI/COL незначительно ухудшились (Δ &lt; -0.3). Чаще всего это файлы с изначально высоким качеством (MOS &gt; 3.0).<br>
+            <em>Гипотеза:</em> модель может вносить артефакты при обработке «чистого» сигнала.
+        </div>
+
+        <h4 style="margin-top: 20px;">🔧 Рекомендации для production:</h4>
+        <ul class="insights">
+            <li><strong>Добавить пост-обработку LUFS:</strong> финальный лимитер для точного попадания в -16...-23 дБ</li>
+            <li><strong>Адаптивный порог применения:</strong> для файлов с MOS &gt; 3.0 рассмотреть режим "light enhancement"</li>
+            <li><strong>Мониторинг метрик DIS/NOI:</strong> логировать случаи ухудшения для дообучения</li>
+            <li><strong>Аугментация при дообучении:</strong> добавить больше примеров с экстремально низкой громкостью (&lt; -40 дБ)</li>
+        </ul>
+    </div>
+
+    <div class="highlight-box">
+        <strong>🚀 Готовность к целевому сценарию:</strong><br>
+        Модель готова к использованию для очистки речи в неподготовленных переговорных комнатах. 
+        Ожидаемое улучшение: <b>+0.8–1.0 MOS</b> для типичных записей с реверберацией и фоновым шумом.
+    </div>
+
+    <!-- Сводная статистика (карточки) -->
+    <h2>📈 Сводная статистика (по всем 75 записям)</h2>
+
     <div class="metrics-grid" id="metrics-container">
         <!-- Заполняется JavaScript -->
     </div>
 
-    <!-- Графики на всю ширину -->
+    <!-- Графики -->
     <div class="charts-row">
         <div class="chart-item">
             <canvas id="mosChart"></canvas>
@@ -258,8 +590,8 @@
         </div>
     </div>
 
-    <!-- Подробная таблица -->
-    <h2>🎧 Все аудиообразцы (73 записи)</h2>
+    <!-- Подробная таблица с аудио (НЕ ИЗМЕНЯЕТСЯ) -->
+    <h2>🎧 Все аудиообразцы (75 записи)</h2>
 
     <div class="note">
         ⚠️ <strong>Расположение файлов:</strong><br>
@@ -283,13 +615,13 @@
             </tr>
         </thead>
         <tbody id="table-body">
-            <!-- Строки будут вставлены скриптом -->
+            <!-- Строки будут вставлены скриптом - БЕЗ ИЗМЕНЕНИЙ -->
         </tbody>
     </table>
 
     <!-- Футер -->
     <div class="footer">
-        Speech Enhancement Demo · Отчет на основе 73 реальных записей · Данные из mos_results (1).csv
+        Speech Enhancement Demo · Отчёт на основе 75 реальных записей · Данные из mos_results.csv
     </div>
 
 </div>
@@ -299,8 +631,11 @@
 
 <script>
     (function() {
-        // --- Данные, извлеченные из вашего CSV (73 записи, удалены 09090909 и 11111) ---
+        // === ДАННЫЕ ИЗ ВАШЕГО CSV (75 ЗАПИСЕЙ, ВКЛЮЧАЯ 09090909 И 11111) ===
+        // ⚠️ Аудиоплееры используют те же пути, что и в оригинале — НИЧЕГО НЕ ИЗМЕНЕНО
         const samples = [
+            { file: "09090909_20260303_150149.wav", mos_orig: 2.409662, mos_final: 3.0727046, lufs_orig: -29.8213, lufs_final: -27.5136, dis_orig: 3.73617, dis_final: 3.96403, noi_orig: 3.35361, noi_final: 3.87517, col_orig: 2.32720, col_final: 2.88882, loud_orig: 2.69118, loud_final: 3.42332 },
+            { file: "11111_20260303_090619.wav", mos_orig: 2.262004, mos_final: 3.62973, lufs_orig: -32.7143, lufs_final: -25.3366, dis_orig: 3.83489, dis_final: 4.09937, noi_orig: 3.53639, noi_final: 3.95848, col_orig: 2.73369, col_final: 3.82088, loud_orig: 2.41829, loud_final: 4.01782 },
             { file: "B104_20260224_074007.wav", mos_orig: 2.05734, mos_final: 4.065587, lufs_orig: -28.5009, lufs_final: -21.5765, dis_orig: 3.76784, dis_final: 4.47669, noi_orig: 2.18724, noi_final: 4.11235, col_orig: 2.05764, col_final: 3.59417, loud_orig: 2.50552, loud_final: 4.11363 },
             { file: "B202_20260220_085452.wav", mos_orig: 2.1386125, mos_final: 2.652542, lufs_orig: -25.2621, lufs_final: -25.9199, dis_orig: 2.65052, dis_final: 3.64336, noi_orig: 3.48289, noi_final: 3.38667, col_orig: 2.24123, col_final: 2.29177, loud_orig: 3.12635, loud_final: 3.05774 },
             { file: "B202_20260220_085518.wav", mos_orig: 2.4017684, mos_final: 2.819625, lufs_orig: -24.1535, lufs_final: -26.5828, dis_orig: 3.17705, dis_final: 3.71326, noi_orig: 3.62977, noi_final: 3.57192, col_orig: 2.37119, col_final: 2.4085, loud_orig: 3.19052, loud_final: 3.23589 },
@@ -376,7 +711,7 @@
             { file: "Эльбрус_20260220_080650.wav", mos_orig: 2.3866048, mos_final: 3.4041238, lufs_orig: -29.9123, lufs_final: -18.6272, dis_orig: 3.59663, dis_final: 4.40916, noi_orig: 3.0776, noi_final: 3.98758, col_orig: 2.15578, col_final: 2.85188, loud_orig: 2.84272, loud_final: 3.72952 }
         ];
 
-        // --- Функция для вычисления средних значений ---
+        // === ФУНКЦИЯ ДЛЯ ВЫЧИСЛЕНИЯ СРЕДНИХ ЗНАЧЕНИЙ (75 файлов) ===
         function calculateAverages(data) {
             const sums = {
                 mos_orig: 0, mos_final: 0, lufs_orig: 0, lufs_final: 0,
@@ -416,7 +751,7 @@
 
         const avg = calculateAverages(samples);
         
-        // Обновление метрик
+        // === ОБНОВЛЕНИЕ МЕТРИК (с точными значениями) ===
         const metricsContainer = document.getElementById('metrics-container');
         metricsContainer.innerHTML = `
             <div class="metric-card">
@@ -427,7 +762,7 @@
             <div class="metric-card">
                 <div class="metric-label">Громкость (LUFS)</div>
                 <div class="metric-value">${avg.lufs_orig} → <span style="color:#0f7b3a;">${avg.lufs_final}</span></div>
-                <div class="improvement">+${(avg.lufs_final - avg.lufs_orig).toFixed(1)}</div>
+                <div class="improvement">+${(avg.lufs_final - avg.lufs_orig).toFixed(1)} дБ</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">NISQA NOI (шум)</div>
@@ -451,7 +786,7 @@
             </div>
         `;
 
-        // --- Построение графиков (увеличенных) ---
+        // === ПОСТРОЕНИЕ ГРАФИКОВ ===
         const mosCtx = document.getElementById('mosChart').getContext('2d');
         new Chart(mosCtx, {
             type: 'bar',
@@ -507,21 +842,17 @@
             }
         });
 
-        // --- Заполнение таблицы ---
+        // === ЗАПОЛНЕНИЕ ТАБЛИЦЫ (БЕЗ ИЗМЕНЕНИЙ В ЛОГИКЕ АУДИО) ===
         const tableBody = document.getElementById('table-body');
         
-        // Пути к файлам (исправлено: для финальных файлов добавляем _final)
         samples.forEach((sample, index) => {
             const row = document.createElement('tr');
             const delta = (sample.mos_final - sample.mos_orig).toFixed(3);
-            
-            // Получаем имя файла без расширения для добавления _final
             const fileNameWithoutExt = sample.file.replace('.wav', '');
             
-            // Формируем пути к файлам
+            // Пути к файлам — БЕЗ ИЗМЕНЕНИЙ
             const cleanPath = 'origin/TEST_SPEACH.wav';
             const recordedPath = 'recordings/' + sample.file;
-            // ВАЖНО: для финальных файлов добавляем _final перед .wav
             const finalPath = 'output/' + fileNameWithoutExt + '_final.wav';
 
             row.innerHTML = `
@@ -537,12 +868,11 @@
             tableBody.appendChild(row);
         });
 
-        // Добавляем обработчик ошибок для аудио элементов
+        // Обработчик ошибок для аудио (без изменений)
         document.querySelectorAll('audio').forEach(audio => {
             audio.addEventListener('error', function(e) {
                 console.error('Ошибка загрузки аудио:', this.src);
                 this.style.border = '1px solid red';
-                // Добавляем подсказку
                 const parent = this.parentElement;
                 if (!parent.querySelector('.error-tip')) {
                     const tip = document.createElement('div');
@@ -559,7 +889,7 @@
     })();
 </script>
 
-<!-- Дополнительный стиль для ячеек с дельтой -->
+<!-- Дополнительный стиль -->
 <style>
     .improvement {
         background-color: #dcfce7;
