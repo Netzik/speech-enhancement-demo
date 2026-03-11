@@ -153,16 +153,24 @@
 
         .chart-container {
             background: white;
-            padding: 20px;
+            padding: 30px;
             border-radius: 20px;
             margin: 30px 0;
             border: 1px solid #eef2f6;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .chart-wrapper {
+            width: 100%;
+            height: 400px;
+            margin: 20px 0;
         }
 
         canvas {
-            max-height: 300px;
-            max-width: 100%;
-            margin: auto;
+            width: 100% !important;
+            height: 400px !important;
+            max-height: 400px;
         }
 
         .room-badge {
@@ -181,6 +189,28 @@
             border-left: 4px solid #f5b342;
             margin: 25px 0;
             font-size: 0.95em;
+        }
+        
+        .charts-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .chart-item {
+            flex: 1 1 45%;
+            min-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid #eef2f6;
+        }
+        
+        @media (max-width: 1100px) {
+            .chart-item {
+                min-width: 100%;
+            }
         }
     </style>
 </head>
@@ -202,62 +232,33 @@
     <h2>📘 О проекте</h2>
     <div class="description">
         <p>В этом эксперименте оценивается способность нейросетевого подавления шумов <strong>MossFormerGAN</strong> (с последующим автоматическим мастерингом) восстанавливать качество речи, записанной в сложных акустических условиях.</p>
-        <p><strong>Методика:</strong> эталонная чистая речь воспроизводилась через громкоговоритель и записывалась в 75 различных помещениях (офисы, переговорные, холлы). Каждая запись была обработана единым пайплайном: улучшение речи MossFormerGAN → автоматическая оптимизация громкости и тонального баланса (мастеринг) → оценка объективными метриками NISQA.</p>
-        <p>В таблице ниже представлены все 75 образцов: оригинальная запись ("Recorded Speech") и результат после полной обработки ("Final Enhancement"). Для сравнения также доступна оригинальная чистая речь.</p>
+        <p><strong>Методика:</strong> эталонная чистая речь воспроизводилась через громкоговоритель и записывалась в 73 различных помещениях (офисы, переговорные, холлы). Каждая запись была обработана единым пайплайном: улучшение речи MossFormerGAN → автоматическая оптимизация громкости и тонального баланса (мастеринг) → оценка объективными метриками NISQA.</p>
+        <p>В таблице ниже представлены все 73 образца: оригинальная запись ("Recorded Speech") и результат после полной обработки ("Final Enhancement"). Для сравнения также доступна оригинальная чистая речь.</p>
     </div>
 
-    <h2>📈 Сводная статистика (по всем 75 записям)</h2>
+    <h2>📈 Сводная статистика (по всем 73 записям)</h2>
 
-    <!-- Средние значения, рассчитанные по данным из CSV -->
-    <div class="metrics-grid">
-        <div class="metric-card">
-            <div class="metric-label">Средний MOS</div>
-            <div class="metric-value">2.13 → <span style="color:#0f7b3a;">2.98</span></div>
-            <div class="improvement">+0.85</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-label">Громкость (LUFS)</div>
-            <div class="metric-value">-29.7 → <span style="color:#0f7b3a;">-24.2</span></div>
-            <div class="improvement">+5.5</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-label">NISQA NOI (шум)</div>
-            <div class="metric-value">2.96 → <span style="color:#0f7b3a;">3.66</span></div>
-            <div class="improvement">+0.70</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-label">NISQA COL (окраска)</div>
-            <div class="metric-value">2.42 → <span style="color:#0f7b3a;">2.77</span></div>
-            <div class="improvement">+0.35</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-label">NISQA DIS (искажения)</div>
-            <div class="metric-value">3.52 → <span style="color:#0f7b3a;">3.89</span></div>
-            <div class="improvement">+0.37</div>
-        </div>
-        <div class="metric-card">
-            <div class="metric-label">NISQA LOUD (громкость)</div>
-            <div class="metric-value">2.69 → <span style="color:#0f7b3a;">3.37</span></div>
-            <div class="improvement">+0.68</div>
-        </div>
+    <!-- Средние значения будут заполнены скриптом -->
+    <div class="metrics-grid" id="metrics-container">
+        <!-- Заполняется JavaScript -->
     </div>
 
-    <!-- Блок с графиками Chart.js -->
-    <div class="chart-container" style="display: flex; flex-wrap: wrap; gap: 20px;">
-        <div style="flex: 1; min-width: 280px;">
+    <!-- Графики на всю ширину -->
+    <div class="charts-row">
+        <div class="chart-item">
             <canvas id="mosChart"></canvas>
         </div>
-        <div style="flex: 1; min-width: 280px;">
+        <div class="chart-item">
             <canvas id="nisqaChart"></canvas>
         </div>
     </div>
 
     <!-- Подробная таблица -->
-    <h2>🎧 Все аудиообразцы (75 записей)</h2>
+    <h2>🎧 Все аудиообразцы (73 записи)</h2>
 
     <div class="note">
-        ⚠️ <strong>Расположение файлов:</strong> Предполагается, что файлы лежат в папках <code>recordings/</code> (исходные записи) и <code>output/</code> (обработанные версии). 
-        Оригинал чистой речи — <code>origin/TEST_SPEACH.wav</code>. Если пути отличаются, поправьте переменную <code>PATH_PREFIX</code> в коде HTML.
+        ⚠️ <strong>Расположение файлов:</strong> Файлы должны находиться в папках <code>recordings/</code> (исходные записи) и <code>output/</code> (обработанные версии). 
+        Оригинал чистой речи — <code>origin/TEST_SPEACH.wav</code>.
     </div>
 
     <table id="samples-table">
@@ -280,7 +281,7 @@
 
     <!-- Футер -->
     <div class="footer">
-        Speech Enhancement Demo · Отчет на основе 75 реальных записей · Данные из mos_results (1).csv
+        Speech Enhancement Demo · Отчет на основе 73 реальных записей · Данные из mos_results (1).csv
     </div>
 
 </div>
@@ -290,11 +291,8 @@
 
 <script>
     (function() {
-        // --- Данные, извлеченные из вашего CSV (75 записей) ---
-        // Это массив объектов, каждый соответствует строке CSV.
+        // --- Данные, извлеченные из вашего CSV (73 записи, удалены 09090909 и 11111) ---
         const samples = [
-            { file: "09090909_20260303_150149.wav", mos_orig: 2.409662, mos_final: 3.0727046, lufs_orig: -29.8213, lufs_final: -27.5136, dis_orig: 3.73617, dis_final: 3.96403, noi_orig: 3.35361, noi_final: 3.87517, col_orig: 2.3272, col_final: 2.88882, loud_orig: 2.69118, loud_final: 3.42332 },
-            { file: "11111_20260303_090619.wav", mos_orig: 2.262004, mos_final: 3.62973, lufs_orig: -32.7143, lufs_final: -25.3366, dis_orig: 3.83489, dis_final: 4.09937, noi_orig: 3.53639, noi_final: 3.95848, col_orig: 2.73369, col_final: 3.82088, loud_orig: 2.41829, loud_final: 4.01782 },
             { file: "B104_20260224_074007.wav", mos_orig: 2.05734, mos_final: 4.065587, lufs_orig: -28.5009, lufs_final: -21.5765, dis_orig: 3.76784, dis_final: 4.47669, noi_orig: 2.18724, noi_final: 4.11235, col_orig: 2.05764, col_final: 3.59417, loud_orig: 2.50552, loud_final: 4.11363 },
             { file: "B202_20260220_085452.wav", mos_orig: 2.1386125, mos_final: 2.652542, lufs_orig: -25.2621, lufs_final: -25.9199, dis_orig: 2.65052, dis_final: 3.64336, noi_orig: 3.48289, noi_final: 3.38667, col_orig: 2.24123, col_final: 2.29177, loud_orig: 3.12635, loud_final: 3.05774 },
             { file: "B202_20260220_085518.wav", mos_orig: 2.4017684, mos_final: 2.819625, lufs_orig: -24.1535, lufs_final: -26.5828, dis_orig: 3.17705, dis_final: 3.71326, noi_orig: 3.62977, noi_final: 3.57192, col_orig: 2.37119, col_final: 2.4085, loud_orig: 3.19052, loud_final: 3.23589 },
@@ -409,11 +407,43 @@
         }
 
         const avg = calculateAverages(samples);
+        
+        // Обновление метрик
+        const metricsContainer = document.getElementById('metrics-container');
+        metricsContainer.innerHTML = `
+            <div class="metric-card">
+                <div class="metric-label">Средний MOS</div>
+                <div class="metric-value">${avg.mos_orig} → <span style="color:#0f7b3a;">${avg.mos_final}</span></div>
+                <div class="improvement">+${(avg.mos_final - avg.mos_orig).toFixed(2)}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Громкость (LUFS)</div>
+                <div class="metric-value">${avg.lufs_orig} → <span style="color:#0f7b3a;">${avg.lufs_final}</span></div>
+                <div class="improvement">+${(avg.lufs_final - avg.lufs_orig).toFixed(1)}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">NISQA NOI (шум)</div>
+                <div class="metric-value">${avg.noi_orig} → <span style="color:#0f7b3a;">${avg.noi_final}</span></div>
+                <div class="improvement">+${(avg.noi_final - avg.noi_orig).toFixed(2)}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">NISQA COL (окраска)</div>
+                <div class="metric-value">${avg.col_orig} → <span style="color:#0f7b3a;">${avg.col_final}</span></div>
+                <div class="improvement">+${(avg.col_final - avg.col_orig).toFixed(2)}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">NISQA DIS (искажения)</div>
+                <div class="metric-value">${avg.dis_orig} → <span style="color:#0f7b3a;">${avg.dis_final}</span></div>
+                <div class="improvement">+${(avg.dis_final - avg.dis_orig).toFixed(2)}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">NISQA LOUD (громкость)</div>
+                <div class="metric-value">${avg.loud_orig} → <span style="color:#0f7b3a;">${avg.loud_final}</span></div>
+                <div class="improvement">+${(avg.loud_final - avg.loud_orig).toFixed(2)}</div>
+            </div>
+        `;
 
-        // --- Обновление метрик в карточках (необязательно, но для красоты) ---
-        // Можно оставить как есть, они уже примерно совпадают.
-
-        // --- Построение графиков ---
+        // --- Построение графиков (увеличенных) ---
         const mosCtx = document.getElementById('mosChart').getContext('2d');
         new Chart(mosCtx, {
             type: 'bar',
@@ -428,10 +458,18 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
-                    title: { display: true, text: 'Улучшение общего качества (MOS)', font: { size: 16 } }
+                    title: { display: true, text: 'Улучшение общего качества (MOS)', font: { size: 18 } },
+                    legend: { display: false }
                 },
-                scales: { y: { beginAtZero: true, max: 5 } }
+                scales: { 
+                    y: { 
+                        beginAtZero: true, 
+                        max: 5,
+                        title: { display: true, text: 'MOS Score' }
+                    } 
+                }
             }
         });
 
@@ -447,30 +485,35 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
-                    title: { display: true, text: 'Детальные метрики NISQA', font: { size: 16 } }
+                    title: { display: true, text: 'Детальные метрики NISQA', font: { size: 18 } }
                 },
-                scales: { y: { beginAtZero: true, max: 5 } }
+                scales: { 
+                    y: { 
+                        beginAtZero: true, 
+                        max: 5,
+                        title: { display: true, text: 'Score' }
+                    } 
+                }
             }
         });
 
         // --- Заполнение таблицы ---
         const tableBody = document.getElementById('table-body');
-        // Путь к файлам. Предполагается, что html лежит в корне, а папки recordings/ и output/ рядом.
-        // Если нет, измените эту переменную, например: const PATH_PREFIX = "ваша_папка/";
+        // Путь к файлам. Используем прямые слеши
         const PATH_PREFIX = ""; 
 
         samples.forEach((sample, index) => {
             const row = document.createElement('tr');
             const delta = (sample.mos_final - sample.mos_orig).toFixed(3);
-            const deltaClass = parseFloat(delta) > 0 ? 'improvement' : ''; // простой класс, можно стилизовать
 
             row.innerHTML = `
                 <td>${index + 1}</td>
                 <td><span class="room-badge">${sample.file.split('_')[0]}</span><br><small>${sample.file}</small></td>
-                <td><audio controls src="${PATH_PREFIX}origin/TEST_SPEACH.wav"></audio></td>
-                <td><audio controls src="${PATH_PREFIX}recordings/${sample.file}"></audio></td>
-                <td><audio controls src="${PATH_PREFIX}output/${sample.file}"></audio></td>
+                <td><audio controls src="${PATH_PREFIX}origin/TEST_SPEACH.wav" preload="none"></audio></td>
+                <td><audio controls src="${PATH_PREFIX}recordings/${sample.file}" preload="none"></audio></td>
+                <td><audio controls src="${PATH_PREFIX}output/${sample.file}" preload="none"></audio></td>
                 <td>${sample.mos_orig.toFixed(3)}</td>
                 <td><b>${sample.mos_final.toFixed(3)}</b></td>
                 <td style="color: ${parseFloat(delta) > 0 ? '#0f7b3a' : '#b91c1c'}; font-weight: 600;">${parseFloat(delta) > 0 ? '+' : ''}${delta}</td>
@@ -494,6 +537,10 @@
     }
     small {
         color: #5f6c7a;
+    }
+    audio {
+        width: 220px;
+        height: 40px;
     }
 </style>
 
